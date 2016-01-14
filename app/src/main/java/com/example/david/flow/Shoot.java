@@ -1,221 +1,248 @@
 package com.example.david.flow;
 
-import java.io.FileOutputStream;
+
+
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
-import android.content.ContentValues;
-import android.graphics.PixelFormat;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.net.Uri;
+import android.hardware.Camera.CameraInfo;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
 import android.os.Bundle;
-import android.provider.MediaStore.Images.Media;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
-public class Shoot extends Activity implements
-        SurfaceHolder.Callback {
-    /** Called when the activity is first created. */
-    private Camera camera;
-    private SurfaceView surfaceCamera;
-    private Boolean isPreview;
-    private FileOutputStream stream;
+public class Shoot extends Activity {
+    private Camera mCamera;
+    private CameraPreview mPreview;
+    private MediaRecorder mediaRecorder;
+    private Button capture, switchCamera;
+    private Context myContext;
+    private LinearLayout cameraPreview;
+    private boolean cameraFront = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // On met l'application en plein écran et sans barre de titre
-        getWindow().setFormat(PixelFormat.TRANSLUCENT);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        isPreview = false;
-
-        // Si vous voulez gérer plusieurs caméra sur votre mobile / tablette
-        for (int nbCamera = 0; nbCamera < Camera.getNumberOfCameras(); nbCamera++) {
-            Camera.CameraInfo informationsCamera = new Camera.CameraInfo();
-            Camera.getCameraInfo(nbCamera, informationsCamera);
-
-            if (informationsCamera != null) {
-                switch (informationsCamera.facing) {
-                    case Camera.CameraInfo.CAMERA_FACING_FRONT:
-                        // Caméra facial
-                        break;
-                    case Camera.CameraInfo.CAMERA_FACING_BACK:
-                        // Caméra arrière
-                        break;
-                }
-            }
-
-        }
-
-        // On applique notre layout
         setContentView(R.layout.activity_shoot);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        myContext = this;
+        initialize();
+    }
 
-        // On récupère notre surface pour le preview
-        surfaceCamera = (SurfaceView) findViewById(R.id.surfaceViewCamera);
-
-        // Quand on clique sur notre surface
-        surfaceCamera.setOnClickListener(new OnClickListener() {
-
-            public void onClick(View v) {
-                // On prend une photo
-                if (camera != null) {
-                    SavePicture();
-                }
-
+    private int findFrontFacingCamera() {
+        int cameraId = -1;
+        // Search for the front facing camera
+        int numberOfCameras = Camera.getNumberOfCameras();
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+                cameraId = i;
+                cameraFront = true;
+                break;
             }
-        });
-
-        // Méthode d'initialisation de la caméra
-        InitializeCamera();
+        }
+        return cameraId;
     }
 
-    public void InitializeCamera() {
-        // On attache nos retour du holder à notre activite
-        surfaceCamera.getHolder().addCallback(this);
-
-        // On spécifie le type du holder en mode SURFACE_TYPE_PUSH_BUFFERS
-        surfaceCamera.getHolder().setType(
-                SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+    private int findBackFacingCamera() {
+        int cameraId = -1;
+        // Search for the back facing camera
+        // get the number of cameras
+        int numberOfCameras = Camera.getNumberOfCameras();
+        // for every camera check
+        for (int i = 0; i < numberOfCameras; i++) {
+            Camera.CameraInfo info = new Camera.CameraInfo();
+            Camera.getCameraInfo(i, info);
+            if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
+                cameraId = i;
+                cameraFront = false;
+                break;
+            }
+        }
+        return cameraId;
     }
 
-    // Retour sur l'application
-    @Override
     public void onResume() {
         super.onResume();
-        camera = Camera.open();
-    }
-
-    // Mise en pause de l'application
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (camera != null) {
-            camera.release();
-            camera = null;
+        if (!hasCamera(myContext)) {
+            Toast toast = Toast.makeText(myContext, "Sorry, your phone does not have a camera!", Toast.LENGTH_LONG);
+            toast.show();
+            finish();
+        }
+        if (mCamera == null) {
+            // if the front facing camera does not exist
+            if (findFrontFacingCamera() < 0) {
+                Toast.makeText(this, "No front facing camera found.", Toast.LENGTH_LONG).show();
+                switchCamera.setVisibility(View.GONE);
+            }
+            mCamera = Camera.open(findBackFacingCamera());
+            mPreview.refreshCamera(mCamera);
         }
     }
 
-    // Implémentation du surface holder
+    public void initialize() {
+        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
 
-    // Quand la surface change
-    public void surfaceChanged(SurfaceHolder holder, int format, int width,
-                               int height) {
+        mPreview = new CameraPreview(myContext, mCamera);
+        cameraPreview.addView(mPreview);
 
-        // Si le mode preview est lancé alors on le stop
-        if (isPreview) {
-            camera.stopPreview();
-        }
+        capture = (Button) findViewById(R.id.button_capture);
+        capture.setOnClickListener(captrureListener);
 
-        // On récupère les parametres de la camera
-        Camera.Parameters parameters = camera.getParameters();
-
-        Camera.Parameters params= camera.getParameters();
-        surfaceCamera.getLayoutParams().width=params.getPreviewSize().height*2;
-        surfaceCamera.getLayoutParams().height=params.getPreviewSize().width*2;
-
-
-        // On change la taille
-        //parameters.setPreviewSize(width, height);
-
-        // On applique nos nouveaux parametres
-        //camera.setParameters(parameters);
-
-        try {
-            // On attache notre previsualisation de la camera au holder de la
-            // surface
-            camera.setPreviewDisplay(surfaceCamera.getHolder());
-        } catch (IOException e) {
-        }
-
-        // On lance la previeuw
-        camera.startPreview();
-
-        isPreview = true;
+        switchCamera = (Button) findViewById(R.id.button_ChangeCamera);
+        switchCamera.setOnClickListener(switchCameraListener);
     }
 
-    public void surfaceCreated(SurfaceHolder holder) {
-        // On prend le controle de la camera
-        if (camera == null)
-            camera = Camera.open();
-    }
+    View.OnClickListener switchCameraListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // get the number of cameras
+            if (!recording) {
+                int camerasNumber = Camera.getNumberOfCameras();
+                if (camerasNumber > 1) {
+                    // release the old camera instance
+                    // switch camera, from the front and the back and vice versa
 
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        // On arrête la camera et on rend la main
-        if (camera != null) {
-            camera.stopPreview();
-            isPreview = false;
-            camera.release();
-        }
-    }
-
-    // Callback pour la prise de photo
-    Camera.PictureCallback pictureCallback = new Camera.PictureCallback() {
-
-        public void onPictureTaken(byte[] data, Camera camera) {
-            if (data != null) {
-                // Enregistrement de votre image
-                try {
-                    if (stream != null) {
-                        stream.write(data);
-                        stream.flush();
-                        stream.close();
-                    }
-                } catch (Exception e) {
-                    // TODO: handle exception
+                    releaseCamera();
+                    chooseCamera();
+                } else {
+                    Toast toast = Toast.makeText(myContext, "Sorry, your phone has only one camera!", Toast.LENGTH_LONG);
+                    toast.show();
                 }
-
-                // On redémarre la prévisualisation
-                camera.startPreview();
             }
         }
     };
 
-    private void SavePicture() {
-        try {
-            SimpleDateFormat timeStampFormat = new SimpleDateFormat(
-                    "yyyy-MM-dd-HH.mm.ss");
-            String fileName = "photo_" + timeStampFormat.format(new Date())
-                    + ".jpg";
+    public void chooseCamera() {
+        // if the camera preview is the front
+        if (cameraFront) {
+            int cameraId = findBackFacingCamera();
+            if (cameraId >= 0) {
+                // open the backFacingCamera
+                // set a picture callback
+                // refresh the preview
 
-            // Metadata pour la photo
-            ContentValues values = new ContentValues();
-            values.put(Media.TITLE, fileName);
-            values.put(Media.DISPLAY_NAME, fileName);
-            values.put(Media.DESCRIPTION, "Image prise par FormationCamera");
-            values.put(Media.DATE_TAKEN, new Date().getTime());
-            values.put(Media.MIME_TYPE, "image/jpeg");
+                mCamera = Camera.open(cameraId);
+                // mPicture = getPictureCallback();
+                mPreview.refreshCamera(mCamera);
+            }
+        } else {
+            int cameraId = findFrontFacingCamera();
+            if (cameraId >= 0) {
+                // open the backFacingCamera
+                // set a picture callback
+                // refresh the preview
 
-            // Support de stockage
-            Uri taken = getContentResolver().insert(Media.EXTERNAL_CONTENT_URI,
-                    values);
-
-            // Ouverture du flux pour la sauvegarde
-            stream = (FileOutputStream) getContentResolver().openOutputStream(
-                    taken);
-
-            Camera.Parameters parameters = camera.getParameters();
-            List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
-            Camera.Size cs = sizes.get(0);
-            parameters.setPreviewSize(cs.width, cs.height);
-            camera.setParameters(parameters);
-
-            camera.takePicture(null, pictureCallback, pictureCallback);
-        } catch (Exception e) {
-            // TODO: handle exception
+                mCamera = Camera.open(cameraId);
+                // mPicture = getPictureCallback();
+                mPreview.refreshCamera(mCamera);
+            }
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // when on Pause, release camera in order to be used from other
+        // applications
+        releaseCamera();
+    }
+
+    private boolean hasCamera(Context context) {
+        // check if the device has camera
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    boolean recording = false;
+    View.OnClickListener captrureListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (recording) {
+                // stop recording and release camera
+                mediaRecorder.stop(); // stop the recording
+                releaseMediaRecorder(); // release the MediaRecorder object
+                Toast.makeText(Shoot.this, "Video captured!", Toast.LENGTH_LONG).show();
+                recording = false;
+            } else {
+                if (!prepareMediaRecorder()) {
+                    Toast.makeText(Shoot.this, "Fail in prepareMediaRecorder()!\n - Ended -", Toast.LENGTH_LONG).show();
+                    finish();
+                }
+                // work on UiThread for better performance
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        // If there are stories, add them to the tabl
+                        try {
+                            mediaRecorder.start();
+                        } catch (final Exception ex) {
+                            // Log.i("---","Exception in thread");
+                        }
+                    }
+                });
+
+                recording = true;
+            }
+        }
+    };
+
+    private void releaseMediaRecorder() {
+        if (mediaRecorder != null) {
+            mediaRecorder.reset(); // clear recorder configuration
+            mediaRecorder.release(); // release the recorder object
+            mediaRecorder = null;
+            mCamera.lock(); // lock camera for later use
+        }
+    }
+
+    private boolean prepareMediaRecorder() {
+
+        mediaRecorder = new MediaRecorder();
+
+        mCamera.unlock();
+        mediaRecorder.setCamera(mCamera);
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+        //mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
+
+        mediaRecorder.setOutputFile("/sdcard/myvideo.mp4");
+
+        mediaRecorder.setMaxDuration(600000); // Set max duration 60 sec.
+        mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
+
+
+        try {
+            mediaRecorder.prepare();
+        } catch (IllegalStateException e) {
+            releaseMediaRecorder();
+            return false;
+        } catch (IOException e) {
+            releaseMediaRecorder();
+            return false;
+        }
+        return true;
 
     }
 
+    private void releaseCamera() {
+        // stop and release camera
+        if (mCamera != null) {
+            mCamera.release();
+            mCamera = null;
+        }
+    }
 }

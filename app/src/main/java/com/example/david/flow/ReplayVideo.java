@@ -29,6 +29,9 @@ public class ReplayVideo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replayvid);
 
+        myContext = this;
+
+
         VideoView mVideoView = (VideoView) findViewById(R.id.video_view);
         mVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small_video));
         mVideoView.setMediaController(new MediaController(this));
@@ -36,7 +39,6 @@ public class ReplayVideo extends Activity {
         mVideoView.start();
 
 
-        myContext = this;
         //initialize();
     }
 

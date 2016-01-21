@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="fill_parent"
 android:layout_height="fill_parent"
 android:orientation="horizontal" >
 
-<LinearLayout
+<RelativeLayout
     android:id="@+id/camera_preview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -12,7 +12,7 @@ android:orientation="horizontal" >
 
     <ImageButton
         android:layout_width="wrap_content"
-        android:layout_height="245dp"
+        android:layout_height="wrap_content"
         android:id="@+id/button_capture"
         android:src="@drawable/shoot_video"
         android:maxHeight="200px"
@@ -21,28 +21,26 @@ android:orientation="horizontal" >
         android:clickable="true"
         android:scaleType="fitCenter"
         android:background="@null"
-        android:layout_alignParentTop="true"
-        android:layout_gravity="bottom" />
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        />
 
     <ImageButton
-        android:layout_width="151dp"
-        android:layout_height="223dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/button_ChangeCamera"
         android:src="@drawable/switch_camera"
-        android:maxHeight="200px"
-        android:maxWidth="200px"
+        android:maxHeight="100px"
+        android:maxWidth="100px"
         android:adjustViewBounds="true"
         android:clickable="true"
         android:scaleType="fitCenter"
-        android:background="@null" />
-</LinearLayout>
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        />
 
-<LinearLayout
-    android:id="@+id/buttonsLayout"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:orientation="vertical" >
-
-</LinearLayout>
-</LinearLayout>
+</RelativeLayout>
+</RelativeLayout>

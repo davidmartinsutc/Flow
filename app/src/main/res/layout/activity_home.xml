@@ -70,17 +70,31 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageButton"
+        android:id="@+id/fbButton"
         android:src="@drawable/fb_icon"
         android:maxHeight="50px"
         android:maxWidth="50px"
         android:adjustViewBounds="true"
         android:clickable="true"
-        android:onClick="launchTop"
         android:scaleType="fitCenter"
         android:background="@null"
         android:layout_alignParentBottom="true"
         android:layout_toRightOf="@+id/launchFlowButton"
         android:layout_toEndOf="@+id/launchFlowButton" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/twitterButton"
+        android:src="@drawable/twitter_icon"
+        android:maxHeight="50px"
+        android:maxWidth="50px"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:layout_alignTop="@+id/fbButton"
+        android:layout_alignRight="@+id/topButton"
+        android:layout_alignEnd="@+id/topButton" />
 
 </RelativeLayout>

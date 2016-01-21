@@ -8,15 +8,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.hardware.Camera.CameraInfo;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 public class Shoot extends Activity {
@@ -25,7 +22,7 @@ public class Shoot extends Activity {
     private MediaRecorder mediaRecorder;
     private ImageButton capture, switchCamera;
     private Context myContext;
-    private LinearLayout cameraPreview;
+    private RelativeLayout cameraPreview;
     private boolean cameraFront = false;
 
     @Override
@@ -90,16 +87,19 @@ public class Shoot extends Activity {
     }
 
     public void initialize() {
-        cameraPreview = (LinearLayout) findViewById(R.id.camera_preview);
+        cameraPreview = (RelativeLayout) findViewById(R.id.camera_preview);
 
         mPreview = new CameraPreview(myContext, mCamera);
         cameraPreview.addView(mPreview);
 
         capture = (ImageButton) findViewById(R.id.button_capture);
         capture.setOnClickListener(captrureListener);
-
+        capture.bringToFront();
         switchCamera = (ImageButton) findViewById(R.id.button_ChangeCamera);
         switchCamera.setOnClickListener(switchCameraListener);
+        switchCamera.bringToFront();
+
+
     }
 
     View.OnClickListener switchCameraListener = new View.OnClickListener() {

@@ -8,8 +8,34 @@ android:orientation="horizontal" >
     android:id="@+id/camera_preview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:layout_weight="1"
-    android:orientation="horizontal" />
+    android:orientation="horizontal" >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="245dp"
+        android:id="@+id/button_capture"
+        android:src="@drawable/shoot_video"
+        android:maxHeight="200px"
+        android:maxWidth="200px"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="bottom" />
+
+    <ImageButton
+        android:layout_width="151dp"
+        android:layout_height="223dp"
+        android:id="@+id/button_ChangeCamera"
+        android:src="@drawable/switch_camera"
+        android:maxHeight="200px"
+        android:maxWidth="200px"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:background="@null" />
+</LinearLayout>
 
 <LinearLayout
     android:id="@+id/buttonsLayout"
@@ -18,18 +44,5 @@ android:orientation="horizontal" >
     android:layout_gravity="center"
     android:orientation="vertical" >
 
-    <Button
-        android:id="@+id/button_ChangeCamera"
-        android:layout_width="72dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Switch Camera" />
-
-    <Button
-        android:id="@+id/button_capture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Capture/Stop" />
 </LinearLayout>
 </LinearLayout>

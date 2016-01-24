@@ -20,7 +20,7 @@ public class Shoot extends Activity {
     private Camera mCamera;
     private CameraPreview mPreview;
     private MediaRecorder mediaRecorder;
-    private ImageButton capture, switchCamera;
+    private ImageButton capture, switchCamera, addVideoButton;
     private Context myContext;
     private RelativeLayout cameraPreview;
     private boolean cameraFront = false;
@@ -98,6 +98,9 @@ public class Shoot extends Activity {
         switchCamera = (ImageButton) findViewById(R.id.button_ChangeCamera);
         switchCamera.setOnClickListener(switchCameraListener);
         switchCamera.bringToFront();
+        addVideoButton = (ImageButton) findViewById(R.id.addVideoButton);
+        ///TO-DO - Listener David
+        addVideoButton.bringToFront();
 
 
     }

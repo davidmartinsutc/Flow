@@ -14,9 +14,9 @@ android:orientation="horizontal" >
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_capture"
-        android:src="@drawable/shoot_video"
-        android:maxHeight="200px"
-        android:maxWidth="200px"
+        android:src="@drawable/logo_flow"
+        android:maxHeight="180px"
+        android:maxWidth="180px"
         android:adjustViewBounds="true"
         android:clickable="true"
         android:scaleType="fitCenter"
@@ -41,6 +41,21 @@ android:orientation="horizontal" >
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:visibility="visible" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addVideoButton"
+        android:src="@drawable/add_icon"
+        android:maxHeight="100px"
+        android:maxWidth="100px"
+        android:adjustViewBounds="true"
+        android:clickable="true"
+        android:scaleType="fitCenter"
+        android:background="@null"
+        android:visibility="visible"
+        android:layout_alignTop="@+id/button_ChangeCamera"
+        android:layout_marginLeft="10dp"/>
 
 </RelativeLayout>
 </RelativeLayout>

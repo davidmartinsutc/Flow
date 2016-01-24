@@ -30,7 +30,7 @@ public class Home extends AppCompatActivity {
 
         launchFlowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, ReplayVideo.class);
+                Intent intent = new Intent(Home.this, PlayFlow.class);
                 startActivityForResult(intent, 1);
             }
         });

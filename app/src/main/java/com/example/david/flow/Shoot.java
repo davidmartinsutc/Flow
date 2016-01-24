@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
@@ -194,6 +195,8 @@ public class Shoot extends Activity {
                 releaseMediaRecorder(); // release the MediaRecorder object
                 Toast.makeText(Shoot.this, "Video captured!", Toast.LENGTH_LONG).show();
                 recording = false;
+                //On redirige vers la page suivante
+                goToReplay();
             } else {
                 if (!prepareMediaRecorder()) {
                     Toast.makeText(Shoot.this, "Fail in prepareMediaRecorder()!\n - Ended -", Toast.LENGTH_LONG).show();
@@ -277,5 +280,10 @@ public class Shoot extends Activity {
             mCamera.release();
             mCamera = null;
         }
+    }
+
+    private void goToReplay() {
+        Intent intent = new Intent(Shoot.this, ReplayVideo.class);
+        startActivityForResult(intent, 2);
     }
 }

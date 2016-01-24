@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 public class Home extends AppCompatActivity {
 
     ImageButton shootButton;
+    ImageButton launchFlowButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +18,7 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         shootButton = (ImageButton) findViewById(R.id.shootButton);
-
+        launchFlowButton = (ImageButton) findViewById(R.id.launchFlowButton);
 
         shootButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -27,12 +28,12 @@ public class Home extends AppCompatActivity {
         });
 
 
-        /*shootButton.setOnClickListener(new View.OnClickListener() {
+        launchFlowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, ReplayVideo.class);
                 startActivityForResult(intent, 1);
             }
-        });*/
+        });
     }
 
 

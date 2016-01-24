@@ -3,18 +3,25 @@ package com.example.david.flow;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Surface;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
 
 public class Shoot extends Activity {
     private Camera mCamera;
@@ -24,6 +31,10 @@ public class Shoot extends Activity {
     private Context myContext;
     private RelativeLayout cameraPreview;
     private boolean cameraFront = false;
+    private SurfaceHolder surfaceHolder;
+    private SurfaceView surfaceview;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,6 +45,24 @@ public class Shoot extends Activity {
         initialize();
     }
 
+    public void initialize() {
+        cameraPreview = (RelativeLayout) findViewById(R.id.camera_preview);
+        mPreview = new CameraPreview(myContext, mCamera);
+        cameraPreview.addView(mPreview);
+
+
+        capture = (ImageButton) findViewById(R.id.button_capture);
+        capture.setOnClickListener(captrureListener);
+        capture.bringToFront();
+        switchCamera = (ImageButton) findViewById(R.id.button_ChangeCamera);
+        switchCamera.setOnClickListener(switchCameraListener);
+        switchCamera.bringToFront();
+        addVideoButton = (ImageButton) findViewById(R.id.addVideoButton);
+        ///TO-DO - Listener David
+        addVideoButton.bringToFront();
+    }
+
+    //Caméra de face
     private int findFrontFacingCamera() {
         int cameraId = -1;
         // Search for the front facing camera
@@ -49,6 +78,7 @@ public class Shoot extends Activity {
         }
         return cameraId;
     }
+
 
     private int findBackFacingCamera() {
         int cameraId = -1;
@@ -86,24 +116,6 @@ public class Shoot extends Activity {
         }
     }
 
-    public void initialize() {
-        cameraPreview = (RelativeLayout) findViewById(R.id.camera_preview);
-
-        mPreview = new CameraPreview(myContext, mCamera);
-        cameraPreview.addView(mPreview);
-
-        capture = (ImageButton) findViewById(R.id.button_capture);
-        capture.setOnClickListener(captrureListener);
-        capture.bringToFront();
-        switchCamera = (ImageButton) findViewById(R.id.button_ChangeCamera);
-        switchCamera.setOnClickListener(switchCameraListener);
-        switchCamera.bringToFront();
-        addVideoButton = (ImageButton) findViewById(R.id.addVideoButton);
-        ///TO-DO - Listener David
-        addVideoButton.bringToFront();
-
-
-    }
 
     View.OnClickListener switchCameraListener = new View.OnClickListener() {
         @Override
@@ -169,6 +181,9 @@ public class Shoot extends Activity {
         }
     }
 
+
+
+    //On clique sur l'enregistrement
     boolean recording = false;
     View.OnClickListener captrureListener = new View.OnClickListener() {
         @Override
@@ -210,19 +225,32 @@ public class Shoot extends Activity {
         }
     }
 
+
+
+
+
     private boolean prepareMediaRecorder() {
 
+
+
         mediaRecorder = new MediaRecorder();
+
 
         mCamera.unlock();
         mediaRecorder.setCamera(mCamera);
 
+        mediaRecorder.setPreviewDisplay(mPreview.getmHolder().getSurface());
+
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
         mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
-        //mediaRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_720P));
 
-        mediaRecorder.setOutputFile("/sdcard/myvideo.mp4");
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+
+        mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/myvideo4.mp4");
+
 
         mediaRecorder.setMaxDuration(600000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
@@ -231,9 +259,11 @@ public class Shoot extends Activity {
         try {
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
+            System.out.print("ici : Illegal e");
             releaseMediaRecorder();
             return false;
         } catch (IOException e) {
+            System.out.print("ici : IOException e");
             releaseMediaRecorder();
             return false;
         }

@@ -7,62 +7,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:onClick="launchFlow">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/launchFlowButton"
-        android:src="@drawable/logo_flow"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:cropToPadding="false"
-        android:baselineAlignBottom="false"
-        android:contextClickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:longClickable="false"
-        android:nestedScrollingEnabled="false"
-        android:maxWidth="400px"
-        android:maxHeight="400px"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:layout_above="@+id/shootButton"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="55dp" />
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/shootButton"
-        android:src="@drawable/shoot_video"
-        android:maxHeight="200px"
-        android:maxWidth="200px"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:layout_alignTop="@+id/topButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="40dp"/>
-
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/topButton"
-        android:src="@drawable/top_flow"
-        android:maxHeight="200px"
-        android:maxWidth="200px"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:longClickable="false"
-        android:layout_marginBottom="84dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="40dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -75,9 +20,9 @@
         android:clickable="true"
         android:scaleType="fitCenter"
         android:background="@null"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/launchFlowButton"
-        android:layout_toEndOf="@+id/launchFlowButton" />
+        android:layout_alignBottom="@+id/twitterButton"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -90,8 +35,67 @@
         android:clickable="true"
         android:scaleType="fitCenter"
         android:background="@null"
-        android:layout_alignTop="@+id/fbButton"
-        android:layout_alignRight="@+id/topButton"
-        android:layout_alignEnd="@+id/topButton" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="800px"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/launchFlowButton"
+            android:src="@drawable/logo_flow"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:longClickable="false"
+            android:nestedScrollingEnabled="false"
+            android:maxWidth="400px"
+            android:maxHeight="400px"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50px"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shootButton"
+            android:src="@drawable/shoot_video"
+            android:maxHeight="200px"
+            android:maxWidth="200px"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="70px"
+            android:layout_marginBottom="80px"/>
+
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/topButton"
+            android:src="@drawable/top_flow"
+            android:maxHeight="200px"
+            android:maxWidth="200px"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="70px"
+            android:layout_marginBottom="80px"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Flow</string>
+    <string name="twitter_app_url">https://twitter.com/FlowOfficialApp</string>
+    <string name="fb_app_url">https://www.facebook.com/FlowOfficialApp/</string>
 </resources>

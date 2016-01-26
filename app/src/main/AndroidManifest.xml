@@ -64,8 +64,6 @@
         </activity>
 
 
-        <activity android:name=".Flow" >
-        </activity>
     </application>
 
 </manifest>

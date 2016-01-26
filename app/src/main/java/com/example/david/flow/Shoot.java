@@ -3,18 +3,15 @@ package com.example.david.flow;
 
 
 import java.io.IOException;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
-import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -55,12 +52,24 @@ public class Shoot extends Activity {
         capture = (ImageButton) findViewById(R.id.button_capture);
         capture.setOnClickListener(captrureListener);
         capture.bringToFront();
-        switchCamera = (ImageButton) findViewById(R.id.button_ChangeCamera);
+        switchCamera = (ImageButton) findViewById(R.id.button_report);
         switchCamera.setOnClickListener(switchCameraListener);
         switchCamera.bringToFront();
+
+
         addVideoButton = (ImageButton) findViewById(R.id.addVideoButton);
         ///TO-DO - Listener David
         addVideoButton.bringToFront();
+
+        /********* Choisir video depuis le telephone ********/
+        addVideoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("video/mp4");
+                startActivity(intent);
+            }
+        });
     }
 
     //Caméra de face
@@ -286,4 +295,5 @@ public class Shoot extends Activity {
         Intent intent = new Intent(Shoot.this, ReplayVideo.class);
         startActivityForResult(intent, 2);
     }
+
 }

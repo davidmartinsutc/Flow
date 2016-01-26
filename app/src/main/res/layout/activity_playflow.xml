@@ -19,7 +19,7 @@ android:orientation="horizontal" >
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_capture"
+        android:id="@+id/button_like"
         android:src="@drawable/like"
         android:maxHeight="200px"
         android:maxWidth="200px"
@@ -35,7 +35,7 @@ android:orientation="horizontal" >
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_ChangeCamera"
+        android:id="@+id/button_report"
         android:src="@drawable/alert"
         android:maxHeight="100px"
         android:maxWidth="100px"

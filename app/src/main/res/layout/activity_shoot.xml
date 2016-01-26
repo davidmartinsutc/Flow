@@ -31,13 +31,13 @@ android:orientation="horizontal" >
         android:scaleType="fitCenter"
         android:background="@null"
         android:visibility="visible"
-        android:layout_alignTop="@+id/button_ChangeCamera"
+        android:layout_alignTop="@+id/button_report"
         android:layout_marginLeft="10dp"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/button_ChangeCamera"
+        android:id="@+id/button_report"
         android:src="@drawable/switch_camera"
         android:maxHeight="100px"
         android:maxWidth="100px"

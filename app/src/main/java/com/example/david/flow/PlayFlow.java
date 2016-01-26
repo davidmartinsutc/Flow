@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.ImageButton;
 import android.widget.MediaController;
 import android.widget.VideoView;
@@ -27,9 +26,9 @@ public class PlayFlow extends Activity {
 
         goVideo();
 
-        buttonLike = (ImageButton) findViewById(R.id.buttonSend);
+        buttonLike = (ImageButton) findViewById(R.id.button_like);
         buttonLike.bringToFront();
-        buttonReport = (ImageButton) findViewById(R.id.buttonSend);
+        buttonReport = (ImageButton) findViewById(R.id.button_report);
         buttonReport.bringToFront();
 
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
+import android.media.Image;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
@@ -25,6 +27,7 @@ import java.io.IOException;
 public class ReplayVideo extends Activity {
 
     private Context myContext;
+    private ImageButton buttonCancel, buttonSave, buttonSend;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,12 @@ public class ReplayVideo extends Activity {
 
         mVideoView.start();
 
+        buttonCancel = (ImageButton) findViewById(R.id.buttonCancel);
+        buttonCancel.bringToFront();
+        buttonSave = (ImageButton) findViewById(R.id.buttonSave);
+        buttonSave.bringToFront();
+        buttonSend = (ImageButton) findViewById(R.id.buttonSend);
+        buttonSend.bringToFront();
 
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override

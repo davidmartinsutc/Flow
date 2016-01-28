@@ -7,11 +7,23 @@ import java.io.IOException;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -28,7 +40,9 @@ public class Shoot extends Activity {
     private ImageButton capture, switchCamera, addVideoButton;
     private Context myContext;
     private RelativeLayout cameraPreview;
-    private boolean cameraFront = false;
+
+
+    private static boolean cameraFront = false;
     private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceview;
 
@@ -36,6 +50,8 @@ public class Shoot extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        System.out.println("create ici");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoot);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -70,7 +86,39 @@ public class Shoot extends Activity {
                 startActivity(intent);
             }
         });
+
+
+        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(new SensorEventListener() {
+            int orientation = -1;
+
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[1] < 6.5 && event.values[1] > -6.5) {
+                    if (orientation != 1) {
+                        Log.d("Sensor", "Landscape");
+                        capture.setImageDrawable(getRotatedImage(R.drawable.logo_flow, 90));
+                        switchCamera.setImageDrawable(getRotatedImage(R.drawable.switch_camera, 90));
+                    }
+                    orientation = 1;
+                } else {
+                    if (orientation != 0) {
+                        Log.d("Sensor", "Portrait");
+                        capture.setImageDrawable(getRotatedImage(R.drawable.logo_flow, 0));
+                        switchCamera.setImageDrawable(getRotatedImage(R.drawable.switch_camera, 0));
+                    }
+                    orientation = 0;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // TODO Auto-generated method stub
+
+            }
+        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
     }
+
 
     //Caméra de face
     private int findFrontFacingCamera() {
@@ -172,7 +220,10 @@ public class Shoot extends Activity {
                 mPreview.refreshCamera(mCamera);
             }
         }
+        ///Call surfacechanged
+        mPreview.surfaceChanged(mPreview.getHolder(), -1, mPreview.getWidth(), mPreview.getHeight());
     }
+
 
     @Override
     protected void onPause() {
@@ -296,4 +347,22 @@ public class Shoot extends Activity {
         startActivityForResult(intent, 2);
     }
 
+    public boolean isCameraFront() {
+        return cameraFront;
+    }
+
+    /*public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        System.out.println("ici conf change");
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }*/
+
+    private Drawable getRotatedImage(int drawableId, int degrees) {
+        Bitmap original = BitmapFactory.decodeResource(getResources(), drawableId);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+
+        Bitmap rotated = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
+        return new BitmapDrawable(rotated);
+    }
 }

@@ -316,7 +316,12 @@ public class Shoot extends Activity {
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
 
-        mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/myvideo4.mp4");
+        /*String state = Environment.getExternalStorageState();
+        if(Environment.MEDIA_MOUNTED.equals(state))
+            mediaRecorder.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/tmpvideo.mp4");
+        else
+            mediaRecorder.setOutputFile(getFilesDir().getAbsolutePath() + "/tmpvideo.mp4");*/
+        mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmpvideo.mp4");
 
 
         mediaRecorder.setMaxDuration(600000); // Set max duration 60 sec.
@@ -365,6 +370,15 @@ public class Shoot extends Activity {
     private void goToReplay() {
         Intent intent = new Intent(Shoot.this, ReplayVideo.class);
         startActivityForResult(intent, 2);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                finish();
+            }
+        }
     }
 
     public boolean isCameraFront() {

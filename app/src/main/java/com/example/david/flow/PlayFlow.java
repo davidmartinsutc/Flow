@@ -5,9 +5,15 @@ import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
+
+import com.example.david.flow.Services.FlowManager;
+
+import java.util.UUID;
 
 /**
  * Created by David on 24/01/2016.
@@ -40,6 +46,12 @@ public class PlayFlow extends Activity {
             }
         });
 
+        buttonLike.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                likeVideo();
+            }
+        });
+
     }
 
     private void setVideo(String video) {
@@ -56,7 +68,19 @@ public class PlayFlow extends Activity {
     }
 
     private String nextVideo() {
-        String video = "android.resource://" + getPackageName() + "/" + R.raw.small_video;
+        String video = "android.resource://" + getPackageName() + "/" + R.raw.testvid;
         return video;
+    }
+
+    private void likeVideo() {
+
+        try {
+            FlowManager flowmanager = FlowManager.getInstance();
+            flowmanager.likeVideo(new UUID(1, 1));
+            Toast.makeText(PlayFlow.this, "Liked!", Toast.LENGTH_LONG).show();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

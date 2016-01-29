@@ -3,6 +3,7 @@ package com.example.david.flow;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
@@ -45,6 +46,9 @@ public class Shoot extends Activity {
     private static boolean cameraFront = false;
     private SurfaceHolder surfaceHolder;
     private SurfaceView surfaceview;
+
+    private int desiredwidth=640, desiredheight=360;
+
 
 
 
@@ -310,14 +314,30 @@ public class Shoot extends Activity {
 
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
         mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.MPEG_4_SP);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
 
         mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/myvideo4.mp4");
 
 
         mediaRecorder.setMaxDuration(600000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
+        mediaRecorder.setOrientationHint(90);
 
+
+        //Taille de la vidéo enregistrée
+        List<Camera.Size> previewsizes = mPreview.getParameters().getSupportedPreviewSizes();
+        List<Camera.Size> videosizes = mPreview.getParameters().getSupportedVideoSizes();
+
+
+        Camera.Size optimalPreviewSize = getOptimalPreviewSize(previewsizes, desiredwidth, desiredheight);
+
+        Camera.Size optimalVideoSize = getOptimalPreviewSize(videosizes, desiredwidth, desiredheight);
+
+        //p.setPreviewSize(optimalPreviewSize.width, optimalPreviewSize.height);
+
+
+        mediaRecorder.setVideoSize(optimalVideoSize.width, optimalVideoSize.height);
+        //mCamera.setParameters(p);
 
         try {
             mediaRecorder.prepare();
@@ -364,5 +384,43 @@ public class Shoot extends Activity {
 
         Bitmap rotated = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
         return new BitmapDrawable(rotated);
+    }
+
+    private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.2;
+        double targetRatio = (double) w / h;
+        if (sizes == null)
+            return null;
+
+        Camera.Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        // Try to find an size match aspect ratio and size
+        for (Camera.Size size : sizes) {
+            Log.d("Camera", "Checking size " + size.width + "w " + size.height
+                    + "h");
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        // Cannot find the one match the aspect ratio, ignore the
+        // requirement
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Camera.Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
     }
 }

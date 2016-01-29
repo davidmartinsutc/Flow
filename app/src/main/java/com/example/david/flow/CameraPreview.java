@@ -17,6 +17,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     private Camera mCamera;
     private boolean isPreviewRunning = false;
     private Context mycontext;
+    Camera.Parameters parameters;
 
     public CameraPreview(Context context, Camera camera) {
         super(context);
@@ -79,7 +80,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             mCamera.stopPreview();
         }
 
-        Camera.Parameters parameters = mCamera.getParameters();
+        parameters = mCamera.getParameters();
         Display display = ((WindowManager) mycontext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 
         if(display.getRotation() == Surface.ROTATION_0)
@@ -124,5 +125,9 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public SurfaceHolder getmHolder() {
         return mHolder;
+    }
+
+    public Camera.Parameters getParameters() {
+        return parameters;
     }
 }

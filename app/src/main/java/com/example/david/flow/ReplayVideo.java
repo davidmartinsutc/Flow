@@ -3,6 +3,7 @@ package com.example.david.flow;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -26,18 +27,16 @@ import java.io.IOException;
 
 public class ReplayVideo extends Activity {
 
-    private Context myContext;
     private ImageButton buttonCancel, buttonSave, buttonSend;
+    private VideoView mVideoView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replayvid);
 
-        myContext = this;
 
-
-        final VideoView mVideoView = (VideoView) findViewById(R.id.video_view);
+        mVideoView = (VideoView) findViewById(R.id.video_view);
         //mVideoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.small_video));
         mVideoView.setVideoURI(Uri.parse(Environment.getExternalStorageDirectory().getAbsolutePath() + "/myvideo4.mp4"));
 

@@ -161,6 +161,8 @@ public class ReplayVideo extends Activity {
     private void sendVideo() {
        FlowManager flowmanager = FlowManager.getInstance();
        flowmanager.sendVideo(videoFile);
+       Toast.makeText(ReplayVideo.this, "Thank you ;)", Toast.LENGTH_LONG).show();
+
     }
 
 }

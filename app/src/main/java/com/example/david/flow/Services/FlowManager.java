@@ -1,6 +1,7 @@
 package com.example.david.flow.Services;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +17,8 @@ public class FlowManager {
     private UUID currentVideoTop;
 
     private FlowManager() {
+        videoListFlow=new ArrayList<ObjectVideo>();
+        videoListTop=new ArrayList<ObjectVideo>();
     }
 
     private static FlowManager INSTANCE = null;
@@ -33,7 +36,17 @@ public class FlowManager {
     }
 
     public void fillVideoListFlow() {
-        //Remplit ta videoListFlow
+        int tofill = 5 - videoListFlow.size();
+
+        System.out.println("Nombre elements à remplir : "+tofill);
+        //Remplit la videoListFlow
+
+        for (int i=1 ; i<=tofill;i++) {
+            ////////Code a changer avec le vrai serveur
+            ServerSimulator fakeserver = ServerSimulator.getInstance();
+            videoListFlow.add(fakeserver.getNextVideo());
+        }
+        System.out.println("Nombre elements dans la liste : "+videoListFlow.size());
     }
 
     public void fillVideoListTop() {
@@ -48,9 +61,10 @@ public class FlowManager {
         //Ajoute un signalement sur la video
     }
 
-    public File getVideoFlow(){
-
-        return null;
+    public ObjectVideo getVideoFlow(){
+        ObjectVideo currentVideo = videoListFlow.get(1);
+        videoListFlow.remove(1);
+        return currentVideo;
     }
 
     public File getVideoTop(){

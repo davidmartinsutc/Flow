@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * Created by David on 24/01/2016.
  */
-public class PlayFlow extends Activity {
+public class PlayTopFlow extends Activity {
 
     //VideoView mVideoView;
     MediaPlayer mp;
@@ -140,7 +140,7 @@ public class PlayFlow extends Activity {
             try {
                 FlowManager flowmanager = FlowManager.getInstance();
                 flowmanager.likeVideo(idVideo);
-                Toast.makeText(PlayFlow.this, "Liked!", Toast.LENGTH_LONG).show();
+                Toast.makeText(PlayTopFlow.this, "Liked!", Toast.LENGTH_LONG).show();
                 currentliked=true;
             }
             catch (Exception e) {
@@ -154,7 +154,7 @@ public class PlayFlow extends Activity {
             try {
                 FlowManager flowmanager = FlowManager.getInstance();
                 flowmanager.reportVideo(idVideo);
-                Toast.makeText(PlayFlow.this, "Reported! Thanks for helping !", Toast.LENGTH_LONG).show();
+                Toast.makeText(PlayTopFlow.this, "Reported! Thanks for helping !", Toast.LENGTH_LONG).show();
                 currentrepported=true;
             }
             catch (Exception e) {

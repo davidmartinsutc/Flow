@@ -298,8 +298,6 @@ public class Shoot extends Activity {
 
     private boolean prepareMediaRecorder() {
 
-
-
         mediaRecorder = new MediaRecorder();
 
 
@@ -313,8 +311,8 @@ public class Shoot extends Activity {
 
 
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264);
 
         /*String state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state))
@@ -324,7 +322,7 @@ public class Shoot extends Activity {
         mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmpvideo.mp4");
 
 
-        mediaRecorder.setMaxDuration(600000); // Set max duration 60 sec.
+        mediaRecorder.setMaxDuration(150000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
         mediaRecorder.setOrientationHint(90);
 

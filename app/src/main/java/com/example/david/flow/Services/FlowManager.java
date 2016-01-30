@@ -15,6 +15,7 @@ public class FlowManager {
     private UUID firstVideoFlow;
     private UUID currentVideoFlow;
     private UUID currentVideoTop;
+    int nbVideoStockees=5;
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
@@ -36,9 +37,8 @@ public class FlowManager {
     }
 
     public void fillVideoListFlow() {
-        int tofill = 5 - videoListFlow.size();
+        int tofill = nbVideoStockees - videoListFlow.size();
 
-        System.out.println("Nombre elements à remplir : "+tofill);
         //Remplit la videoListFlow
 
         for (int i=1 ; i<=tofill;i++) {

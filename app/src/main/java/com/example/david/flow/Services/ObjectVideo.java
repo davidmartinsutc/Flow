@@ -13,13 +13,6 @@ public class ObjectVideo {
     private FileInputStream myVideo;
 
     public ObjectVideo(UUID idVideo, File video) {
-        if (video.exists()) {
-            System.out.println("File1 exist ici");
-        }
-        else {
-            System.out.println("File1 exist pas ici");
-        }
-
         this.idVideo = idVideo;
         try {
             this.myVideo = new FileInputStream(video);

@@ -31,4 +31,20 @@ public class MessageTopVideo extends Message {
         this.currentVideo = currentVideo;
     }
 
+    /**
+     * @return the videoContent
+     */
+    public FileInputStream getVideoContent() {
+        return videoContent;
+    }
+
+    /**
+     * @param videoContent the videoContent to set
+     */
+    public void setVideoContent(FileInputStream videoContent) {
+        this.videoContent = videoContent;
+    }
+    
+    
+
 }

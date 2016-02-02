@@ -4,6 +4,7 @@ import android.util.Log;
 
 import message.common.api12.flow.com.MessageNextVideo;
 import com.example.david.flow.Services.FlowManager;
+import com.example.david.flow.Services.ObjectVideo;
 
 import io.netty.channel.ChannelHandlerContext;
 
@@ -24,6 +25,8 @@ public class MessageNextVideoAdapter implements MessageAdapter {
 //
 //      nextVideo.setCurrentVideo(test.getIdVideo());
         Log.d("MessageNextVideoAd...", "Id received video : " + nextVideo.getCurrentVideo());
+        manager.getVideoListFlow().add(new ObjectVideo(nextVideo.getCurrentVideo(), nextVideo.getVideoContent()));
+        Log.d("MessageNextVideoAd...", "video added to the flow list");
 
 
     }

@@ -21,6 +21,16 @@ public class ObjectVideo {
         }
     }
 
+
+
+    public ObjectVideo(UUID idVideo, FileInputStream myVideo) {
+        super();
+        this.idVideo = idVideo;
+        this.myVideo = myVideo;
+    }
+
+
+
     public FileInputStream getMyVideo() {
         return myVideo;
     }

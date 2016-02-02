@@ -2,6 +2,7 @@ package com.example.david.flow.Services;
 
 import android.util.Log;
 
+import com.example.david.flow.Services.Com.FlowClient;
 import com.example.david.flow.Services.Com.FlowClientInitializer;
 import message.common.api12.flow.com.Message;
 import message.common.api12.flow.com.MessageNextVideo;
@@ -29,17 +30,14 @@ public class FlowManager {
     private UUID firstVideoFlow;
     private UUID currentVideoFlow;
     private UUID currentVideoTop;
+    private FlowClient client;
     int nbVideoStockees=5;
 
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
-//        try {
-//            launchAppCom("192.168.0.17",8000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+//        client = new FlowClient();
     }
 
     private static FlowManager INSTANCE = null;
@@ -67,9 +65,9 @@ public class FlowManager {
             ServerSimulator fakeserver = ServerSimulator.getInstance();
             videoListFlow.add(fakeserver.getNextVideo());
             //test ume :
-            //MessageNextVideo msg = new MessageNextVideo(null,null);
-            //sendMessage(msg);
-            //Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
+//            MessageNextVideo msg = new MessageNextVideo(null,null);
+//            client.sendMessage(msg);
+//            Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
 
         }
         Log.d("FlowManager:fillVide...","Nombre elements dans la liste : "+videoListFlow.size());
@@ -103,44 +101,55 @@ public class FlowManager {
         return null;
     }
 
-    //*********************
-    //Communication methods
 
-    private Channel channel;
-    private EventLoopGroup group;
+    //***************
+    //getter + setter
 
-    public void launchAppCom(String host, int port) throws InterruptedException {
-
-        group = new NioEventLoopGroup();
-
-
-
-        Bootstrap boostrap = new Bootstrap().group(group).channel(NioSocketChannel.class)
-                .handler(new FlowClientInitializer());
-
-        try {
-            this.channel = boostrap.connect(host, port).sync().channel();
-        } catch (InterruptedException e) {
-            Log.d("FlowManager:launchApp:","Lost connection, check your network connection");
-            throw (e);
-        } catch (Throwable e) {
-            Log.d("FlowManager:launchApp:","Can't connect to server, please check your connection and server statuts");
-//            throw (e);
-        }
-
-        Log.d("FlowManager:launchApp:","Message Manager is initialized for : " + host + ":" + port);
+    public List<ObjectVideo> getVideoListFlow() {
+        return videoListFlow;
     }
 
-    public void sendMessage(Message msg) throws ExceptionInInitializerError {
-
-        if (channel != null) {
-            channel.writeAndFlush(msg);
-            Log.d("sendMessage", msg.getClass().getSimpleName() + " has been sent to : " + channel.remoteAddress());
-        } else
-            throw new ExceptionInInitializerError();
+    public void setVideoListFlow(List<ObjectVideo> videoListFlow) {
+        this.videoListFlow = videoListFlow;
     }
 
-    public void close() {
-        group.shutdownGracefully();
+    public List<ObjectVideo> getVideoListTop() {
+        return videoListTop;
+    }
+
+    public void setVideoListTop(List<ObjectVideo> videoListTop) {
+        this.videoListTop = videoListTop;
+    }
+
+    public UUID getFirstVideoFlow() {
+        return firstVideoFlow;
+    }
+
+    public void setFirstVideoFlow(UUID firstVideoFlow) {
+        this.firstVideoFlow = firstVideoFlow;
+    }
+
+    public UUID getCurrentVideoFlow() {
+        return currentVideoFlow;
+    }
+
+    public void setCurrentVideoFlow(UUID currentVideoFlow) {
+        this.currentVideoFlow = currentVideoFlow;
+    }
+
+    public UUID getCurrentVideoTop() {
+        return currentVideoTop;
+    }
+
+    public void setCurrentVideoTop(UUID currentVideoTop) {
+        this.currentVideoTop = currentVideoTop;
+    }
+
+    public int getNbVideoStockees() {
+        return nbVideoStockees;
+    }
+
+    public void setNbVideoStockees(int nbVideoStockees) {
+        this.nbVideoStockees = nbVideoStockees;
     }
 }

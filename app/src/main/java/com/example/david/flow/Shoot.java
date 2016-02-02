@@ -2,6 +2,10 @@ package com.example.david.flow;
 
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -44,11 +48,12 @@ public class Shoot extends Activity {
 
 
     private static boolean cameraFront = false;
-    private SurfaceHolder surfaceHolder;
-    private SurfaceView surfaceview;
+
 
     private int desiredwidth=640, desiredheight=360;
 
+    private FileOutputStream tmpvideo;
+    private File tempFile;
 
 
 
@@ -319,12 +324,36 @@ public class Shoot extends Activity {
             mediaRecorder.setOutputFile(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/tmpvideo.mp4");
         else
             mediaRecorder.setOutputFile(getFilesDir().getAbsolutePath() + "/tmpvideo.mp4");*/
-        mediaRecorder.setOutputFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/tmpvideo.mp4");
+
+
+        try {
+            tempFile = File.createTempFile("tmpvi", ".mp4");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            tmpvideo = new FileOutputStream(tempFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            mediaRecorder.setOutputFile(tmpvideo.getFD());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         mediaRecorder.setMaxDuration(150000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
-        mediaRecorder.setOrientationHint(90);
+
+        if (cameraFront) {
+            mediaRecorder.setOrientationHint(270);
+        }
+        else {
+            mediaRecorder.setOrientationHint(90);
+        }
 
 
         //Taille de la vidéo enregistrée
@@ -367,6 +396,7 @@ public class Shoot extends Activity {
 
     private void goToReplay() {
         Intent intent = new Intent(Shoot.this, ReplayVideo.class);
+        intent.putExtra("tmpvid", tempFile);
         startActivityForResult(intent, 2);
     }
 

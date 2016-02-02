@@ -1,8 +1,20 @@
 package com.example.david.flow;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -35,6 +47,7 @@ public class PlayFlow extends Activity {
     private UUID currentUUID;
     private boolean currentliked;
     private boolean currentrepported;
+    private boolean changeVideo=true, needTransition=false;
 
 
     @Override
@@ -62,8 +75,15 @@ public class PlayFlow extends Activity {
             @Override
             public void onCompletion(MediaPlayer arg0) {
                 // restart on completion
-                mp.reset();
-                goVideo();
+                if (needTransition) {
+                    changeVideo = false;
+                    needTransition = false;
+                    transition();
+                } else {
+                    changeVideo = true;
+                    needTransition = true;
+                    goVideo();
+                }
             }
         });
 
@@ -71,13 +91,17 @@ public class PlayFlow extends Activity {
         buttonLike.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 likeVideo(currentUUID);
+                buttonLike.setVisibility(View.INVISIBLE);
             }
         });
 
         mPlayerView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mp.reset();
-                goVideo();
+                if (changeVideo) {
+                    changeVideo=false;
+                    needTransition=false;
+                    transition();
+                }
             }
         });
 
@@ -87,6 +111,37 @@ public class PlayFlow extends Activity {
             }
         });
 
+
+        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        sensorManager.registerListener(new SensorEventListener() {
+            int orientation = -1;
+
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[1] < 6.5 && event.values[1] > -6.5) {
+                    if (orientation != 1) {
+                        Log.d("Sensor", "Landscape");
+                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 90));
+                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 90));
+                    }
+                    orientation = 1;
+                } else {
+                    if (orientation != 0) {
+                        Log.d("Sensor", "Portrait");
+                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 0));
+                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 0));
+                    }
+                    orientation = 0;
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // TODO Auto-generated method stub
+
+            }
+        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+
     }
 
     protected void onPause(){
@@ -95,21 +150,7 @@ public class PlayFlow extends Activity {
     }
 
 
-    /*private void play() {
 
-        try {
-            mp.setDataSource(PlayFlow.this, Uri.parse("android.resource://com.example.david.flow/raw/testvid"));
-
-            mp.prepare();
-
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
 
 
 
@@ -129,6 +170,7 @@ public class PlayFlow extends Activity {
     }
 
     private void goVideo() {
+        mp.reset();
         FlowManager flowmanager = FlowManager.getInstance();
         flowmanager.fillVideoListFlow();
 
@@ -174,6 +216,34 @@ public class PlayFlow extends Activity {
         }
     }
 
+    private void transition() {
 
+        mp.reset();
+        AssetFileDescriptor afd = getResources().openRawResourceFd(R.raw.transition);
+
+        try {
+            mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getDeclaredLength());
+
+            mp.prepare();
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        mp.start();
+    }
+
+
+    private Drawable getRotatedImage(int drawableId, int degrees) {
+        Bitmap original = BitmapFactory.decodeResource(getResources(), drawableId);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degrees);
+
+        Bitmap rotated = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
+        return new BitmapDrawable(rotated);
+    }
 
 }

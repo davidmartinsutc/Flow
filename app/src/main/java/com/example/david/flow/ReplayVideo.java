@@ -2,10 +2,13 @@ package com.example.david.flow;
 
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.MediaController;
@@ -14,10 +17,16 @@ import android.widget.VideoView;
 
 import com.example.david.flow.Services.FlowManager;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,12 +45,7 @@ public class ReplayVideo extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replayvid);
 
-        String state = Environment.getExternalStorageState();
-        if(Environment.MEDIA_MOUNTED.equals(state))
-            videoFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/tmpvideo.mp4");
-        else
-            videoFile = new File(getFilesDir().getAbsolutePath() + "/tmpvideo.mp4");
-
+        videoFile= (File) getIntent().getExtras().get("tmpvid");
 
         mVideoView = (VideoView) findViewById(R.id.video_view);
 
@@ -78,6 +82,7 @@ public class ReplayVideo extends Activity {
             public void onClick(View v) {
                 sendVideo();
                 setResult(Activity.RESULT_OK);
+                videoFile.deleteOnExit();
                 finish();
             }
         });
@@ -85,8 +90,8 @@ public class ReplayVideo extends Activity {
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 setResult(Activity.RESULT_CANCELED);
+                videoFile.deleteOnExit();
                 finish();
-                //Shoot.finish();
             }
         });
     }
@@ -97,31 +102,33 @@ public class ReplayVideo extends Activity {
         //Define video name when saved
         String timeStamp = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
         String videoname= "Flow_"+ timeStamp;
+
+
         File output=null;
 
         String state = Environment.getExternalStorageState();
         if(Environment.MEDIA_MOUNTED.equals(state)) {
-            //output = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + videoname);
-            output = new File(getFilesDir().getAbsolutePath() + "/" + videoname);
-            System.out.println("saved as1 : " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + videoname);
-            System.out.println("saved as2 : " + getFilesDir().getAbsolutePath() + "/" + videoname);
+            output = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES).getAbsolutePath() + "/" + videoname);
         }
         else {
-            output = new File(getFilesDir().getAbsolutePath() + "/" + videoname);
-            System.out.println("saved as2 : " + getFilesDir().getAbsolutePath() + "/" + videoname);
+            output = new File(getFilesDir().getAbsolutePath(), videoname);
         }
 
+        System.out.println("File dir1 : "+output.getAbsolutePath());
 
+        System.out.println("File dir2 : "+getFilesDir().getAbsolutePath());
 
         try {
             copyFileUsingFileChannels(videoFile, output);
-            //copyFileUsingFileStreams(videoFile, output);
             Toast.makeText(ReplayVideo.this, "Video saved!", Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(ReplayVideo.this, "Failed to save!", Toast.LENGTH_LONG).show();
         }
     }
+
+
+
 
     private static void copyFileUsingFileChannels(File source, File dest)
             throws IOException {
@@ -138,7 +145,7 @@ public class ReplayVideo extends Activity {
     }
 
 
-    /*private static void copyFileUsingFileStreams(File source, File dest)
+    private static void copyFileUsingFileStreams(File source, File dest)
             throws IOException {
         InputStream input = null;
         OutputStream output = null;
@@ -154,12 +161,12 @@ public class ReplayVideo extends Activity {
             input.close();
             output.close();
         }
-    }*/
+    }
 
     private void sendVideo() {
-       FlowManager flowmanager = FlowManager.getInstance();
-       flowmanager.sendVideo(videoFile);
-       Toast.makeText(ReplayVideo.this, "Thank you ;)", Toast.LENGTH_LONG).show();
+        FlowManager flowmanager = FlowManager.getInstance();
+        flowmanager.sendVideo(videoFile);
+        Toast.makeText(ReplayVideo.this, "Thank you ;)", Toast.LENGTH_LONG).show();
 
     }
 

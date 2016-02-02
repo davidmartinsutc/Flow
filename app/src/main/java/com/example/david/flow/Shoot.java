@@ -347,7 +347,13 @@ public class Shoot extends Activity {
 
         mediaRecorder.setMaxDuration(150000); // Set max duration 60 sec.
         mediaRecorder.setMaxFileSize(50000000); // Set max file size 50M
-        mediaRecorder.setOrientationHint(90);
+
+        if (cameraFront) {
+            mediaRecorder.setOrientationHint(270);
+        }
+        else {
+            mediaRecorder.setOrientationHint(90);
+        }
 
 
         //Taille de la vidéo enregistrée

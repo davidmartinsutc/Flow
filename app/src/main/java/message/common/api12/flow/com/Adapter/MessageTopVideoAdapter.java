@@ -7,7 +7,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 public class MessageTopVideoAdapter implements MessageAdapter{
     
-    public MessageTopVideo topVideo;
+    private MessageTopVideo topVideo;
 
     public MessageTopVideoAdapter(MessageTopVideo topVideo) {
         super();

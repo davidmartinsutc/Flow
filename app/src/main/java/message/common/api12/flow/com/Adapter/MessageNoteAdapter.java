@@ -5,7 +5,7 @@ import com.example.david.flow.Services.FlowManager;
 import io.netty.channel.ChannelHandlerContext;
 
 public class MessageNoteAdapter implements MessageAdapter{
-    MessageNote note;
+    private MessageNote note;
 
     public MessageNoteAdapter(MessageNote note) {
         super();

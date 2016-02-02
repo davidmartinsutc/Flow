@@ -3,6 +3,10 @@ package message.common.api12.flow.com;
 import java.util.UUID;
 
 public class MessageNote extends Message {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -4852638559401057469L;
     UUID idVideo;
     int note;// if -1 -> signal if 1 -> note+1
 
@@ -20,7 +24,8 @@ public class MessageNote extends Message {
     }
 
     /**
-     * @param idVideo the idVideo to set
+     * @param idVideo
+     *            the idVideo to set
      */
     public void setIdVideo(UUID idVideo) {
         this.idVideo = idVideo;
@@ -34,7 +39,8 @@ public class MessageNote extends Message {
     }
 
     /**
-     * @param note the note to set
+     * @param note
+     *            the note to set
      */
     public void setNote(int note) {
         this.note = note;

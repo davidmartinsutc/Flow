@@ -1,10 +1,13 @@
 package message.common.api12.flow.com;
 
-
 import java.io.FileInputStream;
 import java.util.UUID;
 
 public class MessageNextVideo extends Message {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 4793337315566988416L;
     UUID currentVideo;
     UUID firstVideo;
     FileInputStream videoContent;
@@ -23,7 +26,8 @@ public class MessageNextVideo extends Message {
     }
 
     /**
-     * @param currentVideo the currentVideo to set
+     * @param currentVideo
+     *            the currentVideo to set
      */
     public void setCurrentVideo(UUID currentVideo) {
         this.currentVideo = currentVideo;
@@ -37,7 +41,8 @@ public class MessageNextVideo extends Message {
     }
 
     /**
-     * @param firstVideo the firstVideo to set
+     * @param firstVideo
+     *            the firstVideo to set
      */
     public void setFirstVideo(UUID firstVideo) {
         this.firstVideo = firstVideo;
@@ -51,7 +56,8 @@ public class MessageNextVideo extends Message {
     }
 
     /**
-     * @param videoContent the videoContent to set
+     * @param videoContent
+     *            the videoContent to set
      */
     public void setVideoContent(FileInputStream videoContent) {
         this.videoContent = videoContent;

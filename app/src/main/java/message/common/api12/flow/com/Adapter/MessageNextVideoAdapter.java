@@ -9,7 +9,7 @@ import io.netty.channel.ChannelHandlerContext;
 
 
 public class MessageNextVideoAdapter implements MessageAdapter {
-    MessageNextVideo nextVideo;
+    private MessageNextVideo nextVideo;
 
     public MessageNextVideoAdapter(MessageNextVideo nextVideo) {
         super();

@@ -8,8 +8,8 @@ public class MessageNewVideo extends Message {
      * 
      */
     private static final long serialVersionUID = -6254183161771687242L;
-    Date creationDate;
-    FileInputStream videoContent;
+    private Date creationDate;
+    private FileInputStream videoContent;
 
     public MessageNewVideo(Date creationDate, FileInputStream videoContent) {
         super();

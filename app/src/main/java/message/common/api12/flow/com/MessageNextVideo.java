@@ -8,9 +8,9 @@ public class MessageNextVideo extends Message {
      * 
      */
     private static final long serialVersionUID = 4793337315566988416L;
-    UUID currentVideo;
-    UUID firstVideo;
-    FileInputStream videoContent;
+    private UUID currentVideo;
+    private UUID firstVideo;
+    private FileInputStream videoContent;
 
     public MessageNextVideo(UUID currentVideo, UUID firstVideo) {
         super();

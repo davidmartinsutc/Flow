@@ -7,8 +7,8 @@ public class MessageNote extends Message {
      * 
      */
     private static final long serialVersionUID = -4852638559401057469L;
-    UUID idVideo;
-    int note;// if -1 -> signal if 1 -> note+1
+    private UUID idVideo;
+    private int note;// if -1 -> signal if 1 -> note+1
 
     public MessageNote(UUID idVideo, int note) {
         super();

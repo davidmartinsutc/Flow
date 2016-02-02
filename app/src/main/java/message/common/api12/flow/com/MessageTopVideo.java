@@ -8,8 +8,8 @@ public class MessageTopVideo extends Message {
      * 
      */
     private static final long serialVersionUID = 4518401289273646520L;
-    UUID currentVideo;
-    FileInputStream videoContent;
+    private UUID currentVideo;
+    private FileInputStream videoContent;
 
     public MessageTopVideo(UUID currentVideo) {
         super();

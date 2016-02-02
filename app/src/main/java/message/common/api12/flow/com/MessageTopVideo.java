@@ -1,7 +1,8 @@
 package message.common.api12.flow.com;
 
-import java.io.FileInputStream;
 import java.util.UUID;
+
+import adapter.message.common.api12.flow.com.MessageTopVideoAdapter;
 
 public class MessageTopVideo extends Message {
     /**
@@ -9,11 +10,16 @@ public class MessageTopVideo extends Message {
      */
     private static final long serialVersionUID = 4518401289273646520L;
     private UUID currentVideo;
-    private FileInputStream videoContent;
+    private byte[] videoContent;
 
     public MessageTopVideo(UUID currentVideo) {
         super();
         this.currentVideo = currentVideo;
+    }
+
+    @Override
+    public MessageTopVideoAdapter getAdapter() {
+        return new MessageTopVideoAdapter(this);
     }
 
     /**
@@ -34,17 +40,16 @@ public class MessageTopVideo extends Message {
     /**
      * @return the videoContent
      */
-    public FileInputStream getVideoContent() {
+    public byte[] getVideoContent() {
         return videoContent;
     }
 
     /**
-     * @param videoContent the videoContent to set
+     * @param videoContent
+     *            the videoContent to set
      */
-    public void setVideoContent(FileInputStream videoContent) {
+    public void setVideoContent(byte[] videoContent) {
         this.videoContent = videoContent;
     }
-    
-    
 
 }

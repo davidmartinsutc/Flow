@@ -2,6 +2,8 @@ package message.common.api12.flow.com;
 
 import java.io.Serializable;
 
+import adapter.message.common.api12.flow.com.MessageAdapter;
+
 public abstract class Message implements Serializable {
      /**
      * 
@@ -15,4 +17,6 @@ public abstract class Message implements Serializable {
         // TODO Auto-generated method stub
         return this.getClass().getName();
     }
+    
+    public abstract MessageAdapter getAdapter();
 }

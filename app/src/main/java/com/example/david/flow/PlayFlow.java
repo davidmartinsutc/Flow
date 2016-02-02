@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -13,8 +14,9 @@ import android.widget.Toast;
 
 import com.example.david.flow.CustomViews.MediaPlayerView;
 import com.example.david.flow.Services.FlowManager;
-import com.example.david.flow.Services.ObjectVideo;
+import common.api12.flow.com.ObjectVideo;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -115,21 +117,30 @@ public class PlayFlow extends Activity {
         currentUUID=video.getIdVideo();
         currentliked=false;
         currentrepported=false;
-
-        try {
-            mp.setDataSource(video.getMyVideo().getFD());
+        try{
+            Log.d("setVideo","video id:" + video.getIdVideo());
+            Log.d("setVideo","file path:" + video.getFilePath());
+            mp.setDataSource(video.getFilePath());
             mp.prepare();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        video = null;
     }
 
     private void goVideo() {
         FlowManager flowmanager = FlowManager.getInstance();
         flowmanager.fillVideoListFlow();
 
-        //setVideo(nextVideo());
-
+        //TODO: Callback !
+        while(flowmanager.getVideoListFlow().size() == 0){
+            try {
+                Log.d("goVideo:", "videoListFlow est encore vide !");
+                wait(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         setVideo(flowmanager.getVideoFlow());
         mp.start();
     }

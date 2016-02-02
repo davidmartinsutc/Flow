@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.david.flow.CustomViews.MediaPlayerView;
 import com.example.david.flow.Services.FlowManager;
-import com.example.david.flow.Services.ObjectVideo;
+import common.api12.flow.com.ObjectVideo;
 
 import java.io.IOException;
 import java.util.UUID;
@@ -117,7 +117,7 @@ public class PlayTopFlow extends Activity {
         currentrepported=false;
 
         try {
-            mp.setDataSource(video.getMyVideo().getFD());
+            mp.setDataSource(video.getFilePath());
             mp.prepare();
         } catch (IOException e) {
             e.printStackTrace();

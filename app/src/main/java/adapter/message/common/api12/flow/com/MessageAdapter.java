@@ -1,4 +1,4 @@
-package message.common.api12.flow.com.Adapter;
+package adapter.message.common.api12.flow.com;
 
 import com.example.david.flow.Services.FlowManager;
 

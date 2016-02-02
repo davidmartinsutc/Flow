@@ -1,24 +1,23 @@
 package com.example.david.flow.Services;
 
+import android.os.Environment;
 import android.util.Log;
 
 import com.example.david.flow.Services.Com.FlowClient;
-import com.example.david.flow.Services.Com.FlowClientInitializer;
-import message.common.api12.flow.com.Message;
+
+import common.api12.flow.com.ObjectVideo;
+import io.netty.handler.codec.serialization.ObjectDecoderInputStream;
+import message.common.api12.flow.com.MessageNewVideo;
 import message.common.api12.flow.com.MessageNextVideo;
 
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-
-import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.Channel;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
  * Created by David on 26/01/2016.
@@ -38,6 +37,10 @@ public class FlowManager {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
 //        client = new FlowClient();
+        //just to test :
+        ServerSimulator fakeserver = ServerSimulator.getInstance();
+        videoListFlow.add(fakeserver.getNextVideo());
+        videoListFlow.add(fakeserver.getNextVideo());
     }
 
     private static FlowManager INSTANCE = null;
@@ -51,7 +54,9 @@ public class FlowManager {
 
 
     public void sendVideo(File video){
-
+        ObjectVideo tmp = new ObjectVideo(null, video);
+        MessageNewVideo msgToSend = new MessageNewVideo(new Date(),tmp.getMyVideo() );
+        client.sendMessage(msgToSend);
     }
 
     public void fillVideoListFlow() {
@@ -59,13 +64,14 @@ public class FlowManager {
 
         //Remplit la videoListFlow
 
-        for (int i=1 ; i<=2;i++) {
-        //for (int i=1 ; i<=tofill;i++) {
+//        for (int i=1 ; i<=tofill;i++) {
+        for (int i=1 ; i<=tofill;i++) {
             ////////Code a changer avec le vrai serveur
             ServerSimulator fakeserver = ServerSimulator.getInstance();
             videoListFlow.add(fakeserver.getNextVideo());
             //test ume :
-//            MessageNextVideo msg = new MessageNextVideo(null,null);
+//            MessageNextVideo msg = new MessageNextVideo(UUID.randomUUID(),null);
+//
 //            client.sendMessage(msg);
 //            Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
 
@@ -86,8 +92,8 @@ public class FlowManager {
     }
 
     public ObjectVideo getVideoFlow(){
-        ObjectVideo currentVideo = videoListFlow.get(1);
-        videoListFlow.remove(1);
+        ObjectVideo currentVideo = videoListFlow.get(0);
+        videoListFlow.remove(0);
         return currentVideo;
     }
 

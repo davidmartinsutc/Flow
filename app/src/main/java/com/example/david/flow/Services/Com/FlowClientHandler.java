@@ -9,10 +9,10 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import message.common.api12.flow.com.Adapter.MessageNewVideoAdapter;
-import message.common.api12.flow.com.Adapter.MessageNextVideoAdapter;
-import message.common.api12.flow.com.Adapter.MessageNoteAdapter;
-import message.common.api12.flow.com.Adapter.MessageTopVideoAdapter;
+import adapter.message.common.api12.flow.com.MessageNewVideoAdapter;
+import adapter.message.common.api12.flow.com.MessageNextVideoAdapter;
+import adapter.message.common.api12.flow.com.MessageNoteAdapter;
+import adapter.message.common.api12.flow.com.MessageTopVideoAdapter;
 import message.common.api12.flow.com.Message;
 import message.common.api12.flow.com.MessageNewVideo;
 import message.common.api12.flow.com.MessageNextVideo;
@@ -29,26 +29,10 @@ public class FlowClientHandler extends SimpleChannelInboundHandler<Message> {
     @Override
     protected void messageReceived(ChannelHandlerContext ctx, Message msg) throws Exception {
         Log.d("FlowClientHandler", "receiving from serveur...");
-
         FlowManager manager = FlowManager.getInstance();
 
         Message msgReceived = (Message) msg;
         Log.d("FlowClientHandler", "type:" + msg.toString());
-        switch (msgReceived.toString()) {
-            case "message.common.api12.flow.com.MessageNextVideo":
-                new MessageNextVideoAdapter((MessageNextVideo) msgReceived).ProceedClient(ctx, manager);
-                break;
-            case "message.common.api12.flow.com.MessageNote":
-                new MessageNoteAdapter((MessageNote) msgReceived).ProceedClient(ctx, manager);
-                break;
-            case "message.common.api12.flow.com.MessageTopVideo":
-                new MessageTopVideoAdapter((MessageTopVideo) msgReceived).ProceedClient(ctx, manager);
-                break;
-            case "message.common.api12.flow.com.MessageNewVideo":
-                new MessageNewVideoAdapter((MessageNewVideo) msgReceived).ProceedClient(ctx, manager);
-                break;
-            default:
-                Log.d("FlowClientHandler", "Message type unkown :" + msg.toString());
-        }
+        msgReceived.getAdapter().ProceedClient(ctx,manager);
     }
 }

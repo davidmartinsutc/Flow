@@ -2,6 +2,8 @@ package message.common.api12.flow.com;
 
 import java.util.UUID;
 
+import adapter.message.common.api12.flow.com.MessageNoteAdapter;
+
 public class MessageNote extends Message {
     /**
      * 
@@ -14,6 +16,11 @@ public class MessageNote extends Message {
         super();
         this.idVideo = idVideo;
         this.note = note;
+    }
+
+    @Override
+    public MessageNoteAdapter getAdapter(){
+        return new MessageNoteAdapter(this);
     }
 
     /**

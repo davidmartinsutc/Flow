@@ -1,7 +1,8 @@
 package message.common.api12.flow.com;
 
-import java.io.FileInputStream;
 import java.util.Date;
+
+import adapter.message.common.api12.flow.com.MessageNewVideoAdapter;
 
 public class MessageNewVideo extends Message {
     /**
@@ -9,12 +10,17 @@ public class MessageNewVideo extends Message {
      */
     private static final long serialVersionUID = -6254183161771687242L;
     private Date creationDate;
-    private FileInputStream videoContent;
+    private byte[] videoContent;
 
-    public MessageNewVideo(Date creationDate, FileInputStream videoContent) {
+    public MessageNewVideo(Date creationDate, byte[] videoContent) {
         super();
         this.creationDate = creationDate;
         this.videoContent = videoContent;
+    }
+
+    @Override
+    public MessageNewVideoAdapter getAdapter() {
+        return new MessageNewVideoAdapter(this);
     }
 
     /**
@@ -35,7 +41,7 @@ public class MessageNewVideo extends Message {
     /**
      * @return the videoContent
      */
-    public FileInputStream getVideoContent() {
+    public byte[] getVideoContent() {
         return videoContent;
     }
 
@@ -43,7 +49,7 @@ public class MessageNewVideo extends Message {
      * @param videoContent
      *            the videoContent to set
      */
-    public void setVideoContent(FileInputStream videoContent) {
+    public void setVideoContent(byte[] videoContent) {
         this.videoContent = videoContent;
     }
 

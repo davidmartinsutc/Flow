@@ -2,10 +2,10 @@ package com.example.david.flow.Services;
 
 import android.os.Environment;
 
-import com.example.david.flow.R;
-
 import java.io.File;
 import java.util.UUID;
+
+import common.api12.flow.com.ObjectVideo;
 
 /**
  * Created by David on 29/01/2016.
@@ -35,10 +35,12 @@ public class ServerSimulator {
         this.video1 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/testvid.3gp");
         this.video2 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/testvid2.3gp");
         this.video3 = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath()+"/testvid3.3gp");
-
         Ovideo1= new ObjectVideo(UUID.randomUUID(),this.video1);
+        Ovideo1.setFilePath(this.video1.getPath());
         Ovideo2= new ObjectVideo(UUID.randomUUID(),this.video2);
+        Ovideo2.setFilePath(this.video2.getPath());
         Ovideo3= new ObjectVideo(UUID.randomUUID(),this.video3);
+        Ovideo3.setFilePath(this.video3.getPath());
     }
 
 

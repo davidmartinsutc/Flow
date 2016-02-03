@@ -47,7 +47,7 @@ public class Home extends AppCompatActivity {
         shootButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, Shoot.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 background.stopPlayback();
             }
         });
@@ -56,7 +56,7 @@ public class Home extends AppCompatActivity {
         launchFlowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, PlayFlow.class);
-                startActivityForResult(intent, 1);
+                startActivity(intent);
                 background.stopPlayback();
             }
         });

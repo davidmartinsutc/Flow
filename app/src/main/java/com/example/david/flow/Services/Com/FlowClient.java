@@ -1,7 +1,9 @@
 package com.example.david.flow.Services.Com;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,8 +26,10 @@ public class FlowClient {
 
     private Channel channel;
     private EventLoopGroup group;
+    private Boolean serverStatus;
 
-    public FlowClient() {
+    public FlowClient(Boolean serverStatus) {
+        this.serverStatus = serverStatus;
         try {
 //            launchAppCom("192.168.0.17",8000);
             launchAppCom("172.25.33.12",8000);
@@ -48,16 +52,18 @@ public class FlowClient {
             this.channel = boostrap.connect(host, port).sync().channel();
         } catch (InterruptedException e) {
             Log.d("FlowManager:launchApp:", "Lost connection, check your network connection");
+            serverStatus = Boolean.FALSE;
             throw (e);
         } catch (Throwable e) {
-            Log.d("FlowManager:launchApp:","Can't connect to server, please check your connection and server statuts");
+            Log.d("FlowManager:launchApp:", "Can't connect to server, please check your connection and server statuts");
 //            throw (e);
+            serverStatus = Boolean.FALSE;
         }
-
+        serverStatus = Boolean.TRUE;
         Log.d("FlowManager:launchApp:","Message Manager is initialized for : " + host + ":" + port);
     }
 
-    public void sendMessage(Message msg) throws ExceptionInInitializerError {
+    public void sendMessage(Message msg) {
 
 //        ObjectDecoderInputStream tmp = null;
 //        try {
@@ -65,14 +71,12 @@ public class FlowClient {
 //        } catch (FileNotFoundException e) {
 //            e.printStackTrace();
 //        }
-
         if (channel != null) {
 //            channel.writeAndFlush(tmp);
             channel.writeAndFlush(msg);
             //channel.writeAndFlush(msg);
             Log.d("sendMessage", msg.getClass().getSimpleName() + " has been sent to : " + channel.remoteAddress());
-        } else
-            throw new ExceptionInInitializerError();
+        }
     }
 
     public void close() {

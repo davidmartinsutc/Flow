@@ -31,6 +31,8 @@ import common.api12.flow.com.ObjectVideo;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.UUID;
 
 /**
@@ -62,7 +64,14 @@ public class PlayFlow extends Activity {
         mp = mPlayerView.getMp();
         playFlowLayout.addView(mPlayerView);
 
+        Toast.makeText(PlayFlow.this, "Fetching new videos", Toast.LENGTH_LONG).show();
 
+        //lancement du singleton dans un thread à part pour que le OnCreate finisse et que l'activité démarre :
+        new Thread(new Runnable() {
+            public void run() {
+                FlowManager flowmanager = FlowManager.getInstance();
+            }
+        }).start();
 
 
         buttonLike = (ImageButton) findViewById(R.id.button_like);
@@ -70,20 +79,31 @@ public class PlayFlow extends Activity {
         buttonReport = (ImageButton) findViewById(R.id.button_report);
         buttonReport.bringToFront();
 
-        goVideo();
-
+        transition();
+        //en gros on balance que des transitions tant qu'on a pas le serveur
         mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer arg0) {
                 // restart on completion
-                if (needTransition) {
-                    changeVideo = false;
-                    needTransition = false;
+                if(FlowManager.exist()){
+                    if(FlowManager.getInstance().getServerStatus()) {
+                        if (needTransition) {
+                            changeVideo = false;
+                            needTransition = false;
+                            transition();
+                        } else {
+                            changeVideo = true;
+                            needTransition = true;
+                            goVideo();
+                        }
+                    }
+                    else{
+                        Toast.makeText(PlayFlow.this,"Server off",Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                }
+                else{
                     transition();
-                } else {
-                    changeVideo = true;
-                    needTransition = true;
-                    goVideo();
                 }
             }
         });
@@ -169,22 +189,17 @@ public class PlayFlow extends Activity {
     }
 
     private void goVideo() {
-        mp.reset();
         FlowManager flowmanager = FlowManager.getInstance();
-        flowmanager.fillVideoListFlow();
+            mp.reset();
+            flowmanager.fillVideoListFlow();
 
-        //TODO: Callback !
-        while(flowmanager.getVideoListFlow().isEmpty()){
-            try {
-                Log.d("goVideo:", "videoListFlow est encore vide !");
-                wait(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            //TODO: Callback !
+            while(flowmanager.getVideoListFlow().isEmpty()){
+                transition();
+                Toast.makeText(this,"no video yet, wait a bit...", Toast.LENGTH_SHORT).show();
             }
-        }
-        setVideo(flowmanager.getVideoFlow());
-        //TODO -> wait for set video !
-        mp.start();
+            setVideo(flowmanager.getVideoFlow());
+            mp.start();
 
     }
 

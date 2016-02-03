@@ -1,5 +1,6 @@
 package com.example.david.flow.Services;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
@@ -31,25 +32,32 @@ public class FlowManager {
     private UUID currentVideoTop;
     private FlowClient client;
     int nbVideoStockees=5;
+    Boolean serverStatus = Boolean.FALSE;
 
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
-        client = new FlowClient();
+        client = new FlowClient(serverStatus);
+
         //just to test :
-        ServerSimulator fakeserver = ServerSimulator.getInstance();
-        videoListFlow.add(fakeserver.getNextVideo());
+        //ServerSimulator fakeserver = ServerSimulator.getInstance();
+        //videoListFlow.add(fakeserver.getNextVideo());
 //        videoListFlow.add(fakeserver.getNextVideo());
     }
 
     private static FlowManager INSTANCE = null;
 
     public static FlowManager getInstance() {
-        if (INSTANCE== null) {
+        if (INSTANCE == null) {
             INSTANCE = new FlowManager();
         }
         return INSTANCE;
+    }
+
+    public static boolean exist(){
+        if(INSTANCE == null){return Boolean.FALSE;}
+        return Boolean.TRUE;
     }
 
 
@@ -159,5 +167,13 @@ public class FlowManager {
 
     public void setNbVideoStockees(int nbVideoStockees) {
         this.nbVideoStockees = nbVideoStockees;
+    }
+
+    public Boolean getServerStatus() {
+        return serverStatus;
+    }
+
+    public void setServerStatus(Boolean serverStatus) {
+        this.serverStatus = serverStatus;
     }
 }

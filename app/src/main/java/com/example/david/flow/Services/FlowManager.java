@@ -32,7 +32,7 @@ public class FlowManager {
     private UUID currentVideoTop;
     private FlowClient client;
     int nbVideoStockees=5;
-    Boolean serverStatus = Boolean.FALSE;
+    Boolean serverStatus = Boolean.TRUE;
 
 
     private FlowManager() {

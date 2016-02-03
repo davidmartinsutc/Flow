@@ -189,7 +189,7 @@ public class PlayFlow extends Activity {
     }
 
     private void goVideo() {
-        FlowManager flowmanager = FlowManager.getInstance();
+            FlowManager flowmanager = FlowManager.getInstance();
             mp.reset();
             flowmanager.fillVideoListFlow();
 
@@ -198,6 +198,7 @@ public class PlayFlow extends Activity {
                 transition();
                 Toast.makeText(this,"no video yet, wait a bit...", Toast.LENGTH_SHORT).show();
             }
+            mp.reset();
             setVideo(flowmanager.getVideoFlow());
             mp.start();
 

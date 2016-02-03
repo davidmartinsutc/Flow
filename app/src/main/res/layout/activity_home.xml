@@ -9,8 +9,15 @@
     android:animateLayoutChanges="true"
     android:hardwareAccelerated="false"
     android:id="@+id/background">
-    
 
+
+    <VideoView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/background_video"
+        android:layout_toStartOf="@+id/fbButton"
+        android:layout_alignRight="@+id/twitterButton"
+        android:layout_alignEnd="@+id/twitterButton" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,37 +28,36 @@
         android:layout_centerVertical="true"
         android:id="@+id/relativeLayout">
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/launchFlowButton"
-            android:src="@drawable/logo_flow"
-            android:adjustViewBounds="true"
-            android:clickable="true"
-            android:longClickable="false"
-            android:nestedScrollingEnabled="false"
-            android:maxWidth="180dp"
-            android:maxHeight="180dp"
-            android:scaleType="fitCenter"
-            android:background="@null"
-            android:layout_centerHorizontal="true"/>
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/shootButton"
-            android:src="@drawable/shoot_video"
-            android:maxHeight="100dp"
-            android:maxWidth="100dp"
+            android:id="@+id/twitterButton"
+            android:src="@drawable/twitter_icon"
+            android:maxHeight="10pt"
+            android:maxWidth="10pt"
             android:adjustViewBounds="true"
             android:clickable="true"
             android:scaleType="fitCenter"
             android:background="@null"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginBottom="10dp"/>
+            android:layout_alignParentRight="true"
+            />
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/fbButton"
+            android:src="@drawable/fb_icon"
+            android:maxHeight="10pt"
+            android:maxWidth="10pt"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_alignBottom="@+id/twitterButton"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"/>
 
         <ImageButton
             android:layout_width="wrap_content"
@@ -69,36 +75,37 @@
             android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"/>
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shootButton"
+            android:src="@drawable/shoot_video"
+            android:maxHeight="100dp"
+            android:maxWidth="100dp"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="30dp"
+            android:layout_marginBottom="10dp"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/launchFlowButton"
+            android:src="@drawable/logo_flow"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:longClickable="false"
+            android:nestedScrollingEnabled="false"
+            android:maxWidth="180dp"
+            android:maxHeight="180dp"
+            android:scaleType="fitCenter"
+            android:background="@null"
+            android:layout_centerHorizontal="true"/>
+
     </RelativeLayout>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/twitterButton"
-        android:src="@drawable/twitter_icon"
-        android:maxHeight="10pt"
-        android:maxWidth="10pt"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/fbButton"
-        android:src="@drawable/fb_icon"
-        android:maxHeight="10pt"
-        android:maxWidth="10pt"
-        android:adjustViewBounds="true"
-        android:clickable="true"
-        android:scaleType="fitCenter"
-        android:background="@null"
-        android:layout_alignBottom="@+id/twitterButton"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="50dp"/>
 
 </RelativeLayout>

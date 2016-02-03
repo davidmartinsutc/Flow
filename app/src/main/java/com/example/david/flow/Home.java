@@ -25,17 +25,14 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //RelativeLayout background = (RelativeLayout) findViewById(R.id.background);
 
-        //gifView = new GifView(this);
-        //background.addView(gifView);
 
 
         shootButton = (ImageButton) findViewById(R.id.shootButton);
         launchFlowButton = (ImageButton) findViewById(R.id.launchFlowButton);
         twitterButton = (ImageButton) findViewById(R.id.twitterButton);
         fbButton = (ImageButton) findViewById(R.id.fbButton);
-        /*background = (VideoView) findViewById(R.id.background_video);
+        background = (VideoView) findViewById(R.id.background_video);
 
 
         background.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mosaique));
@@ -45,7 +42,7 @@ public class Home extends AppCompatActivity {
             public void onCompletion(MediaPlayer mediaPlayer) {
                 background.start();
             }
-        });*/
+        });
 
         shootButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

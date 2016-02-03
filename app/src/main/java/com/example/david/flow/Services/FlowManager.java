@@ -30,17 +30,17 @@ public class FlowManager {
     private UUID currentVideoFlow;
     private UUID currentVideoTop;
     private FlowClient client;
-    int nbVideoStockees=5;
+    int nbVideoStockees=3;
 
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
-//        client = new FlowClient();
+        //client = new FlowClient();
         //just to test :
         ServerSimulator fakeserver = ServerSimulator.getInstance();
         videoListFlow.add(fakeserver.getNextVideo());
-        videoListFlow.add(fakeserver.getNextVideo());
+//        videoListFlow.add(fakeserver.getNextVideo());
     }
 
     private static FlowManager INSTANCE = null;
@@ -56,6 +56,7 @@ public class FlowManager {
     public void sendVideo(File video){
         ObjectVideo tmp = new ObjectVideo(null, video);
         MessageNewVideo msgToSend = new MessageNewVideo(new Date(),tmp.getMyVideo() );
+        Log.d("sendVideo","msgToSend:size:"+msgToSend.getVideoContent().length);
         client.sendMessage(msgToSend);
     }
 
@@ -70,8 +71,8 @@ public class FlowManager {
             ServerSimulator fakeserver = ServerSimulator.getInstance();
             videoListFlow.add(fakeserver.getNextVideo());
             //test ume :
-//            MessageNextVideo msg = new MessageNextVideo(UUID.randomUUID(),null);
-//
+//            MessageNextVideo msg = new MessageNextVideo(currentVideoFlow,null);
+
 //            client.sendMessage(msg);
 //            Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
 
@@ -93,6 +94,7 @@ public class FlowManager {
 
     public ObjectVideo getVideoFlow(){
         ObjectVideo currentVideo = videoListFlow.get(0);
+        currentVideoFlow = currentVideo.getIdVideo();
         videoListFlow.remove(0);
         return currentVideo;
     }
@@ -111,7 +113,7 @@ public class FlowManager {
     //***************
     //getter + setter
 
-    public List<ObjectVideo> getVideoListFlow() {
+    public synchronized List<ObjectVideo> getVideoListFlow() {
         return videoListFlow;
     }
 

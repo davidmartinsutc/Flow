@@ -395,6 +395,11 @@ public class Shoot extends Activity {
     }
 
     private void goToReplay() {
+        try {
+            tmpvideo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Intent intent = new Intent(Shoot.this, ReplayVideo.class);
         intent.putExtra("tmpvid", tempFile);
         startActivityForResult(intent, 2);

@@ -2,6 +2,7 @@ package com.example.david.flow.CustomViews;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import android.content.Context;
 import android.hardware.Camera;
@@ -85,26 +86,21 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
         if(display.getRotation() == Surface.ROTATION_0)
         {
-            System.out.println("rotation 0");
-            parameters.setPreviewSize(height, width);
+            Log.d("surfaceChanged","rotation 0");
             mCamera.setDisplayOrientation(90);
-        }
-
-        if(display.getRotation() == Surface.ROTATION_90)
-        {
-            parameters.setPreviewSize(width, height);
-        }
-
-        if(display.getRotation() == Surface.ROTATION_180)
-        {
-            parameters.setPreviewSize(height, width);
         }
 
         if(display.getRotation() == Surface.ROTATION_270)
         {
-            parameters.setPreviewSize(width, height);
             mCamera.setDisplayOrientation(180);
         }
+
+        List<Camera.Size> previewSizes = parameters.getSupportedPreviewSizes();
+
+        // You need to choose the most appropriate previewSize for your app
+        Camera.Size previewSize = previewSizes.get(0); // .... select one of previewSizes here
+
+        parameters.setPreviewSize(previewSize.width, previewSize.height);
 
         mCamera.setParameters(parameters);
         refreshCamera(mCamera);

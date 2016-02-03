@@ -175,10 +175,10 @@ public class PlayFlow extends Activity {
         flowmanager.fillVideoListFlow();
 
         //TODO: Callback !
-        while(flowmanager.getVideoListFlow().size() == 0){
+        while(flowmanager.getVideoListFlow().isEmpty()){
             try {
                 Log.d("goVideo:", "videoListFlow est encore vide !");
-                wait(100);
+                wait(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

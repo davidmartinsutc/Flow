@@ -45,7 +45,6 @@ public class MessageNextVideoAdapter implements MessageAdapter {
                 e.printStackTrace();
             }
         }
-
         manager.getVideoListFlow().add(tmp);
 
 

@@ -64,7 +64,6 @@ public class PlayFlow extends Activity {
         mp = mPlayerView.getMp();
         playFlowLayout.addView(mPlayerView);
 
-        Toast.makeText(PlayFlow.this, "Fetching new videos", Toast.LENGTH_LONG).show();
 
         //lancement du singleton dans un thread à part pour que le OnCreate finisse et que l'activité démarre :
         new Thread(new Runnable() {
@@ -195,8 +194,8 @@ public class PlayFlow extends Activity {
 
             //TODO: Callback !
             while(flowmanager.getVideoListFlow().isEmpty()){
+                Toast.makeText(PlayFlow.this, "Fetching new videos", Toast.LENGTH_SHORT).show();
                 transition();
-                Toast.makeText(this,"no video yet, wait a bit...", Toast.LENGTH_SHORT).show();
             }
             mp.reset();
             setVideo(flowmanager.getVideoFlow());

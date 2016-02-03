@@ -28,21 +28,24 @@ public class ObjectVideo {
     }
 
     /**
-     * @param filePath the filePath to set
+     * @param fileName the filePath to set
      */
-    public void writeFileToPath(String filePath) {
+    public void writeFileToPath(String fileName) {
+
+
+        File fileDest = null;
         try {
-            File fileDest = new File(filePath);
-            FileWriter writer = new FileWriter(fileDest);
+            fileDest = File.createTempFile(fileName,".mp4");
             FileOutputStream tmp = new FileOutputStream(fileDest);
             tmp.write(myVideo);
             tmp.close();
+            tmp = null;
         } catch (Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
         finally {
-            this.filePath = filePath;
+            this.filePath = fileDest.getPath();
         }
     }
 

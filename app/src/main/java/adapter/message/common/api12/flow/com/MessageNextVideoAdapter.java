@@ -33,7 +33,7 @@ public class MessageNextVideoAdapter implements MessageAdapter {
         ObjectVideo tmp = new ObjectVideo(nextVideo.getCurrentVideo(), nextVideo.getVideoContent());
         //set android tmp folder file Path + create the file
 
-        tmp.writeFileToPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/" + nextVideo.getCurrentVideo() + ".3gp");
+        tmp.writeFileToPath(nextVideo.getCurrentVideo().toString());
 
         Log.d("MessageNextVideoAd...", "temp filePath : " + tmp.getFilePath());
         //TODO Callback

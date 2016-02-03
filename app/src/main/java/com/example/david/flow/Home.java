@@ -16,7 +16,7 @@ import com.example.david.flow.CustomViews.GifView;
 
 public class Home extends AppCompatActivity {
 
-    ImageButton shootButton, launchFlowButton, twitterButton, fbButton;
+    ImageButton shootButton, launchFlowButton,topButton, twitterButton, fbButton;
     GifView gifView;
     VideoView background;
 
@@ -30,6 +30,7 @@ public class Home extends AppCompatActivity {
 
         shootButton = (ImageButton) findViewById(R.id.shootButton);
         launchFlowButton = (ImageButton) findViewById(R.id.launchFlowButton);
+        topButton = (ImageButton) findViewById(R.id.topButton);
         twitterButton = (ImageButton) findViewById(R.id.twitterButton);
         fbButton = (ImageButton) findViewById(R.id.fbButton);
         background = (VideoView) findViewById(R.id.background_video);
@@ -56,6 +57,14 @@ public class Home extends AppCompatActivity {
         launchFlowButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, PlayFlow.class);
+                startActivity(intent);
+                background.stopPlayback();
+            }
+        });
+
+        topButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, PlayTopFlow.class);
                 startActivity(intent);
                 background.stopPlayback();
             }

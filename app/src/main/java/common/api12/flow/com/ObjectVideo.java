@@ -49,7 +49,6 @@ public class ObjectVideo {
     public ObjectVideo(UUID idVideo, File video) {
         this.idVideo = idVideo;
         this.setMyVideo(video);
-
     }
 
     public ObjectVideo(UUID idVideo, byte[] myVideo) {

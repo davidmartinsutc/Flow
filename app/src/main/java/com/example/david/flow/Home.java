@@ -35,7 +35,7 @@ public class Home extends AppCompatActivity {
         launchFlowButton = (ImageButton) findViewById(R.id.launchFlowButton);
         twitterButton = (ImageButton) findViewById(R.id.twitterButton);
         fbButton = (ImageButton) findViewById(R.id.fbButton);
-        background = (VideoView) findViewById(R.id.background_video);
+        /*background = (VideoView) findViewById(R.id.background_video);
 
 
         background.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mosaique));
@@ -45,7 +45,7 @@ public class Home extends AppCompatActivity {
             public void onCompletion(MediaPlayer mediaPlayer) {
                 background.start();
             }
-        });
+        });*/
 
         shootButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

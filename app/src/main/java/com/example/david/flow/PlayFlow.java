@@ -155,6 +155,7 @@ public class PlayFlow extends Activity {
         currentUUID=video.getIdVideo();
         currentliked=false;
         currentrepported=false;
+
         try{
             Log.d("setVideo","video id:" + video.getIdVideo());
             Log.d("setVideo","file path:" + video.getFilePath());
@@ -164,6 +165,7 @@ public class PlayFlow extends Activity {
             e.printStackTrace();
         }
         video = null;
+        buttonLike.setVisibility(View.VISIBLE);
     }
 
     private void goVideo() {
@@ -183,6 +185,7 @@ public class PlayFlow extends Activity {
         setVideo(flowmanager.getVideoFlow());
         //TODO -> wait for set video !
         mp.start();
+
     }
 
     private void likeVideo(UUID idVideo) {

@@ -101,7 +101,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         Camera.Size previewSize = previewSizes.get(0); // .... select one of previewSizes here
 
         parameters.setPreviewSize(previewSize.width, previewSize.height);
-
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
         mCamera.setParameters(parameters);
         refreshCamera(mCamera);
     }
@@ -116,7 +116,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         // TODO Auto-generated method stub
-        // mCamera.release();
+         mCamera.release();
     }
 
     public SurfaceHolder getmHolder() {

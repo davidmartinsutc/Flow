@@ -41,7 +41,7 @@ public class MediaPlayerView extends SurfaceView implements SurfaceHolder.Callba
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+        mp.release();
     }
 
     public SurfaceHolder getmHolder() {

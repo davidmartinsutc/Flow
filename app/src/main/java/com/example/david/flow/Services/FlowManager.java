@@ -30,13 +30,13 @@ public class FlowManager {
     private UUID currentVideoFlow;
     private UUID currentVideoTop;
     private FlowClient client;
-    int nbVideoStockees=3;
+    int nbVideoStockees=5;
 
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
-        //client = new FlowClient();
+        client = new FlowClient();
         //just to test :
         ServerSimulator fakeserver = ServerSimulator.getInstance();
         videoListFlow.add(fakeserver.getNextVideo());
@@ -68,13 +68,13 @@ public class FlowManager {
 //        for (int i=1 ; i<=tofill;i++) {
         for (int i=1 ; i<=tofill;i++) {
             ////////Code a changer avec le vrai serveur
-            ServerSimulator fakeserver = ServerSimulator.getInstance();
-            videoListFlow.add(fakeserver.getNextVideo());
+            //ServerSimulator fakeserver = ServerSimulator.getInstance();
+            //videoListFlow.add(fakeserver.getNextVideo());
             //test ume :
-//            MessageNextVideo msg = new MessageNextVideo(currentVideoFlow,null);
-
-//            client.sendMessage(msg);
-//            Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
+            MessageNextVideo msg = new MessageNextVideo(currentVideoFlow,null);
+//
+            client.sendMessage(msg);
+            Log.d("FlowManager:fillVide...", "sendMessage " + msg.toString());
 
         }
         Log.d("FlowManager:fillVide...","Nombre elements dans la liste : "+videoListFlow.size());

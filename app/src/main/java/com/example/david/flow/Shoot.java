@@ -27,6 +27,8 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -59,7 +61,7 @@ public class Shoot extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        System.out.println("create ici");
+        Log.d("Shoot","create ici");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shoot);
@@ -72,6 +74,7 @@ public class Shoot extends Activity {
         cameraPreview = (RelativeLayout) findViewById(R.id.camera_preview);
         mPreview = new CameraPreview(myContext, mCamera);
         cameraPreview.addView(mPreview);
+
 
 
         capture = (ImageButton) findViewById(R.id.button_capture);
@@ -93,8 +96,25 @@ public class Shoot extends Activity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.setType("video/mp4");
                 startActivity(intent);
+                finish();
+                releaseMediaRecorder();
             }
         });
+
+        /******** Autofocus ********/
+//        cameraPreview.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//
+//                mCamera.autoFocus(new Camera.AutoFocusCallback() {
+//                    @Override
+//                    public void onAutoFocus(boolean success, Camera camera) {
+//
+//                    }
+//                });
+//                return false;
+//            }
+//        });
 
 
         SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
@@ -125,6 +145,8 @@ public class Shoot extends Activity {
                 // TODO Auto-generated method stub
 
             }
+
+
         }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -367,18 +389,17 @@ public class Shoot extends Activity {
 
         //p.setPreviewSize(optimalPreviewSize.width, optimalPreviewSize.height);
 
-
         mediaRecorder.setVideoSize(optimalVideoSize.width, optimalVideoSize.height);
         //mCamera.setParameters(p);
 
         try {
             mediaRecorder.prepare();
         } catch (IllegalStateException e) {
-            System.out.print("ici : Illegal e");
+            Log.d("prepareMediaRecorder","ici : Illegal e");
             releaseMediaRecorder();
             return false;
         } catch (IOException e) {
-            System.out.print("ici : IOException e");
+            Log.d("prepareMediaRecorder","ici : IOException e");
             releaseMediaRecorder();
             return false;
         }
@@ -469,5 +490,17 @@ public class Shoot extends Activity {
             }
         }
         return optimalSize;
+    }
+
+    //kill activity on leave :
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            finish();
+            releaseMediaRecorder();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

@@ -51,6 +51,7 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, Shoot.class);
                 startActivityForResult(intent, 1);
+                background.stopPlayback();
             }
         });
 
@@ -59,20 +60,29 @@ public class Home extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, PlayFlow.class);
                 startActivityForResult(intent, 1);
+                background.stopPlayback();
             }
         });
 
         twitterButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToUrl(getResources().getString(R.string.twitter_app_url));
+                background.stopPlayback();
             }
         });
 
         fbButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 goToUrl(getResources().getString(R.string.fb_app_url));
+                background.stopPlayback();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        background.start();
     }
 
     private void goToUrl (String url) {

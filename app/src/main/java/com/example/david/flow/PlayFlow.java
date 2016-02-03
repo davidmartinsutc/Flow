@@ -17,6 +17,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -150,10 +151,6 @@ public class PlayFlow extends Activity {
     }
 
 
-
-
-
-
     private void setVideo(ObjectVideo video) {
         currentUUID=video.getIdVideo();
         currentliked=false;
@@ -184,6 +181,7 @@ public class PlayFlow extends Activity {
             }
         }
         setVideo(flowmanager.getVideoFlow());
+        //TODO -> wait for set video !
         mp.start();
     }
 
@@ -244,6 +242,18 @@ public class PlayFlow extends Activity {
 
         Bitmap rotated = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
         return new BitmapDrawable(rotated);
+    }
+
+    //kill activity on leave :
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if ((keyCode == KeyEvent.KEYCODE_BACK))
+        {
+            mp.release();
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }

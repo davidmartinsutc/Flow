@@ -141,6 +141,8 @@ public class ReplayVideo extends Activity {
         } finally {
             inputChannel.close();
             outputChannel.close();
+            inputChannel = null;
+            outputChannel = null;
         }
     }
 
@@ -160,6 +162,8 @@ public class ReplayVideo extends Activity {
         } finally {
             input.close();
             output.close();
+            input = null;
+            output = null;
         }
     }
 
@@ -167,7 +171,6 @@ public class ReplayVideo extends Activity {
         FlowManager flowmanager = FlowManager.getInstance();
         flowmanager.sendVideo(videoFile);
         Toast.makeText(ReplayVideo.this, "Thank you ;)", Toast.LENGTH_LONG).show();
-
     }
 
 }

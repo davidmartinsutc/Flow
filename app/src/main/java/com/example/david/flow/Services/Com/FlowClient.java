@@ -27,7 +27,9 @@ public class FlowClient {
 
     public FlowClient() {
         try {
-            launchAppCom("192.168.0.17",8000);
+//            launchAppCom("192.168.0.17",8000);
+            launchAppCom("172.25.33.12",8000);
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

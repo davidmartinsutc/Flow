@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.AssetFileDescriptor;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -18,6 +19,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.OrientationEventListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -51,6 +53,7 @@ public class PlayFlow extends Activity {
     private boolean currentliked;
     private boolean currentrepported;
     private boolean changeVideo=true, needTransition=false;
+    private OrientationEventListener orientationListener;
 
 
     @Override
@@ -85,6 +88,7 @@ public class PlayFlow extends Activity {
             public void onCompletion(MediaPlayer arg0) {
                 // restart on completion
                 if(FlowManager.exist()){
+                    if(FlowManager.getInstance().getServerStatus()!=null){
                     if(FlowManager.getInstance().getServerStatus()) {
                         if (needTransition) {
                             changeVideo = false;
@@ -99,7 +103,7 @@ public class PlayFlow extends Activity {
                     else{
                         Toast.makeText(PlayFlow.this,"Server off",Toast.LENGTH_SHORT).show();
                         finish();
-                    }
+                    }}else{transition();}
                 }
                 else{
                     transition();
@@ -131,6 +135,31 @@ public class PlayFlow extends Activity {
             }
         });
 
+//        orientationListener = new OrientationEventListener(this,
+//                SensorManager.SENSOR_DELAY_NORMAL) {
+//
+//            @Override
+//            public void onOrientationChanged(int orientation) {
+//                switch(orientation){
+//                    case 0:
+//                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 0));
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 0));
+//                        break;
+//                    case 90:
+//                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 90));
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 90));
+//                        break;
+//                    case 180:
+//                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 180));
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 180));
+//                        break;
+//                    case 270:
+//                        buttonLike.setImageDrawable(getRotatedImage(R.drawable.like, 270));
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 270));
+//                        break;
+//                }
+//            }
+//        };
 
         SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(new SensorEventListener() {
@@ -160,9 +189,10 @@ public class PlayFlow extends Activity {
                 // TODO Auto-generated method stub
 
             }
-        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
 
     }
+
 
     protected void onPause(){
         super.onPause();
@@ -273,5 +303,6 @@ public class PlayFlow extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
 }

@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.david.flow.Services.FlowManager;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -26,10 +28,10 @@ public class FlowClient {
 
     private Channel channel;
     private EventLoopGroup group;
-    private Boolean serverStatus;
+    private FlowManager manager;
 
-    public FlowClient(Boolean serverStatus) {
-        this.serverStatus = serverStatus;
+    public FlowClient(FlowManager manager) {
+        this.manager = manager;
         try {
 //            launchAppCom("192.168.0.17",8000);
 //            launchAppCom("172.25.33.12",8000);
@@ -44,8 +46,6 @@ public class FlowClient {
 
         group = new NioEventLoopGroup();
 
-
-
         Bootstrap boostrap = new Bootstrap().group(group).channel(NioSocketChannel.class)
                 .handler(new FlowClientInitializer());
 
@@ -53,14 +53,15 @@ public class FlowClient {
             this.channel = boostrap.connect(host, port).sync().channel();
         } catch (InterruptedException e) {
             Log.d("FlowManager:launchApp:", "Lost connection, check your network connection");
-            serverStatus = Boolean.FALSE;
+            manager.setServerStatus(Boolean.FALSE);
             throw (e);
         } catch (Throwable e) {
             Log.d("FlowManager:launchApp:", "Can't connect to server, please check your connection and server statuts");
 //            throw (e);
-            serverStatus = Boolean.FALSE;
+            manager.setServerStatus(Boolean.FALSE);
+            return;
         }
-        serverStatus = Boolean.TRUE;
+        manager.setServerStatus(Boolean.TRUE);
         Log.d("FlowManager:launchApp:","Message Manager is initialized for : " + host + ":" + port);
     }
 

@@ -42,7 +42,7 @@ public class PlayTopFlow extends Activity {
     private SurfaceView mVideoPlayerView;
     private SurfaceHolder holder;
     private MediaPlayerView mPlayerView;
-    private RelativeLayout playFlowLayout;
+    private RelativeLayout topLayout;
     private UUID currentUUID;
     private boolean currentrepported;
     private boolean changeVideo=true, needTransition=false;
@@ -52,12 +52,12 @@ public class PlayTopFlow extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        setContentView(R.layout.activity_playflow);
+        setContentView(R.layout.activity_top);
 
-        playFlowLayout = (RelativeLayout)findViewById(R.id.layout);
+        topLayout = (RelativeLayout)findViewById(R.id.layout);
         mPlayerView = new MediaPlayerView(this);
         mp = mPlayerView.getMp();
-        playFlowLayout.addView(mPlayerView);
+        topLayout.addView(mPlayerView);
 
 
         //lancement du singleton dans un thread à part pour que le OnCreate finisse et que l'activité démarre :

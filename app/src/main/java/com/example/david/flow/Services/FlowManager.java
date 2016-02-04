@@ -31,14 +31,13 @@ public class FlowManager {
     private UUID currentVideoFlow;
     private UUID currentVideoTop;
     private FlowClient client;
+    private Boolean serverStatus;
     int nbVideoStockees=5;
-    Boolean serverStatus = Boolean.TRUE;
-
 
     private FlowManager() {
         videoListFlow=new ArrayList<ObjectVideo>();
         videoListTop=new ArrayList<ObjectVideo>();
-        client = new FlowClient(serverStatus);
+        client = new FlowClient(this);
 
         //just to test :
         //ServerSimulator fakeserver = ServerSimulator.getInstance();

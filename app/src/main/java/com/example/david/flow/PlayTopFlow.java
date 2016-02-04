@@ -114,34 +114,34 @@ public class PlayTopFlow extends Activity {
             }
         });
 
-
-        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
-        sensorManager.registerListener(new SensorEventListener() {
-            int orientation = -1;
-
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (event.values[1] < 6.5 && event.values[1] > -6.5) {
-                    if (orientation != 1) {
-                        Log.d("Sensor", "Landscape");
-                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 90));
-                    }
-                    orientation = 1;
-                } else {
-                    if (orientation != 0) {
-                        Log.d("Sensor", "Portrait");
-                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 0));
-                    }
-                    orientation = 0;
-                }
-            }
-
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-                // TODO Auto-generated method stub
-
-            }
-        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+//
+//        SensorManager sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+//        sensorManager.registerListener(new SensorEventListener() {
+//            int orientation = -1;
+//
+//            @Override
+//            public void onSensorChanged(SensorEvent event) {
+//                if (event.values[1] < 6.5 && event.values[1] > -6.5) {
+//                    if (orientation != 1) {
+//                        Log.d("Sensor", "Landscape");
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 90));
+//                    }
+//                    orientation = 1;
+//                } else {
+//                    if (orientation != 0) {
+//                        Log.d("Sensor", "Portrait");
+//                        buttonReport.setImageDrawable(getRotatedImage(R.drawable.alert, 0));
+//                    }
+//                    orientation = 0;
+//                }
+//            }
+//
+//            @Override
+//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+//                // TODO Auto-generated method stub
+//
+//            }
+//        }, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
 
     }
 
@@ -173,8 +173,8 @@ public class PlayTopFlow extends Activity {
 
         //TODO: Callback !
         while(flowmanager.getVideoListFlow().isEmpty()){
-            Toast.makeText(PlayTopFlow.this, "Fetching new videos", Toast.LENGTH_SHORT).show();
-            transition();
+//            Toast.makeText(PlayTopFlow.this, "Fetching new videos", Toast.LENGTH_SHORT).show();
+//            transition();
         }
         mp.reset();
         setVideo(flowmanager.getVideoFlow());
